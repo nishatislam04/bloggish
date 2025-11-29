@@ -3,7 +3,7 @@ COMPOSE ?= docker compose
 PRISMA ?= bunx prisma --config ./prisma.config.ts
 DB_SERVICES ?= db studio
 
-.PHONY: migrate generate reset seed dev db-up db-down db-clean db-logs auth-migrate
+.PHONY: migrate generate reset seed dev db-up db-down db-clean db-logs
 
 db-up:
 	@$(COMPOSE) up -d $(DB_SERVICES)
@@ -24,7 +24,7 @@ generate:
 	@$(PRISMA) generate
 
 reset: db-up
-	@$(PRISMA) migrate reset
+	@$(PRISMA) migrate reset --force
 
 seed: db-up
 	@$(PRISMA) db seed
@@ -32,8 +32,3 @@ seed: db-up
 dev: db-up
 	@bun dev
 
-# auth-migrate: db-up
-# 	@$(PRISMA) migrate dev --name auth
-
-# auth-generate:
-# 	@bunx @better-auth/cli generate
