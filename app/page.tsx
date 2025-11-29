@@ -1,15 +1,39 @@
-import { SignOut } from "@/components/sign-out";
-import { getServerSession } from "@/lib/server-session";
+import { CategoriesSection } from "@/components/sections/categories-section";
+import { HeroSection } from "@/components/sections/hero-section";
+import { LatestPostsSection } from "@/components/sections/latest-posts-section";
+import { NewsletterSection } from "@/components/sections/newsletter-section";
+import { PopularPostsSection } from "@/components/sections/popular-posts-section";
+import {
+	getCategories,
+	getFeaturedPost,
+	getLatestPosts,
+	getPopularPosts,
+} from "@/lib/mock-data";
 
-export default async function Home() {
-	const session = await getServerSession();
-
-	console.log(session);
+export default function Home() {
+	const featuredPost = getFeaturedPost();
+	const latestPosts = getLatestPosts(6);
+	const popularPosts = getPopularPosts(4);
+	const categories = getCategories();
 
 	return (
-		<div>
-			<h1>Home</h1>
-			{session && <SignOut />}
-		</div>
+		<>
+			{/* Hero Section */}
+			<section className="container mx-auto px-4 py-8 md:py-12">
+				<HeroSection post={featuredPost} />
+			</section>
+
+			{/* Latest Posts Section */}
+			<LatestPostsSection posts={latestPosts} />
+
+			{/* Categories Section */}
+			<CategoriesSection categories={categories} />
+
+			{/* Popular Posts Section */}
+			<PopularPostsSection posts={popularPosts} />
+
+			{/* Newsletter Section */}
+			<NewsletterSection />
+		</>
 	);
 }
