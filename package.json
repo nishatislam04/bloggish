@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "concurrently --names \"Generate Prisma,Next.js,Prisma Dev,Prisma Studio\" --prefix \"[{name}]\" --prefix-colors \"yellow.bold,blue.bold,green.bold,magenta.bold\" \"bunx prisma generate\" \"next dev\" \"bunx prisma dev\" \"bunx prisma studio --browser none --config ./prisma.config.ts -p 5555\"",
+    "dev": "concurrently --names \"Generate Prisma,Next.js\" --prefix \"[{name}]\" --prefix-colors \"yellow.bold,blue.bold\" \"bunx prisma generate\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

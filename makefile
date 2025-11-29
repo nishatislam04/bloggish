@@ -1,15 +1,33 @@
-# create basic prisma commands
-migrate: 
-	@bunx prisma migrate dev
+SHELL := /bin/bash
+COMPOSE ?= docker compose
+PRISMA ?= bunx prisma --config ./prisma.config.ts
+DB_SERVICE ?= db
+
+.PHONY: migrate generate reset seed dev db-up db-down db-clean db-logs
+
+db-up:
+	@$(COMPOSE) up -d $(DB_SERVICE)
+
+db-down:
+	@$(COMPOSE) stop $(DB_SERVICE)
+
+db-clean:
+	@$(COMPOSE) down -v
+
+db-logs:
+	@$(COMPOSE) logs -f $(DB_SERVICE)
+
+migrate: db-up
+	@$(PRISMA) migrate dev
 
 generate:
-	@bunx prisma generate
+	@$(PRISMA) generate
 
-reset: 
-	@bunx prisma migrate reset
+reset: db-up
+	@$(PRISMA) migrate reset
 
-seed:
-	@bunx prisma db seed
+seed: db-up
+	@$(PRISMA) db seed
 
-dev: 
+dev: db-up
 	@bun dev
