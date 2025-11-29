@@ -34,3 +34,15 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Database & Prisma Studio
+
+- `make dev` (or any database-related make target) launches Dockerized Postgres and Prisma Studio.
+- Prisma Studio is available at [http://localhost:5555](http://localhost:5555) and connects directly to the Postgres container; no extra app installs are required.
+- To only manage the database services:
+  - `make db-up` — start Postgres + Prisma Studio
+  - `make db-down` — stop both services
+  - `make db-logs` — follow their logs
+  - `make db-clean` — stop and remove containers plus volumes (destroys data)
+
+Prisma Studio will display the same data that the app uses, allowing quick inspection and edits from the browser.

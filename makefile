@@ -1,21 +1,21 @@
 SHELL := /bin/bash
 COMPOSE ?= docker compose
 PRISMA ?= bunx prisma --config ./prisma.config.ts
-DB_SERVICE ?= db
+DB_SERVICES ?= db studio
 
 .PHONY: migrate generate reset seed dev db-up db-down db-clean db-logs
 
 db-up:
-	@$(COMPOSE) up -d $(DB_SERVICE)
+	@$(COMPOSE) up -d $(DB_SERVICES)
 
 db-down:
-	@$(COMPOSE) stop $(DB_SERVICE)
+	@$(COMPOSE) stop $(DB_SERVICES)
 
 db-clean:
 	@$(COMPOSE) down -v
 
 db-logs:
-	@$(COMPOSE) logs -f $(DB_SERVICE)
+	@$(COMPOSE) logs -f $(DB_SERVICES)
 
 migrate: db-up
 	@$(PRISMA) migrate dev

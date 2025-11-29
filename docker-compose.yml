@@ -16,5 +16,23 @@ services:
       timeout: 5s
       retries: 5
 
+  studio:
+    image: node:22
+    restart: unless-stopped
+    working_dir: /workspace
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/bloggish?schema=public
+    command: >-
+      sh -c "HOST=0.0.0.0 npx --yes prisma@7.0.1 studio --config prisma.config.ts --browser none --port 5555"
+    volumes:
+      - ./:/workspace
+      - studio-npm-cache:/root/.npm
+    ports:
+      - "5555:5555"
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   postgres-data:
+  studio-npm-cache:
