@@ -210,7 +210,7 @@ export const mockPosts: Post[] = [
 			"Advanced TypeScript patterns and techniques to write more robust, maintainable, and type-safe code.",
 		slug: "typescript-tips-tricks",
 		coverPhoto:
-			"https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=800&h=400&fit=crop",
+			"https://images.unsplash.com/photo-1699885960867-56d5f5262d38?w=800&h=400&fit=crop",
 		author: mockAuthors.author3,
 		category: mockCategories[0],
 		tags: [
