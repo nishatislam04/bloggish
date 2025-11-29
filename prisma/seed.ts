@@ -631,33 +631,71 @@ const generateReactionsData = () => {
 		(post) => post.status === "PUBLISHED",
 	);
 
-	posts.forEach((post) => {
-		// Add 3-8 reactions per post
-		const reactionCount = 3 + Math.random() * 5;
+	// Track which users have reacted to which posts to avoid duplicates
+	const postReactionTracker = new Map();
 
-		for (let i = 0; i < reactionCount; i++) {
-			const userId = `user_${(i % 5) + 1}`;
+	posts.forEach((post) => {
+		postReactionTracker.set(post.id, new Set());
+
+		// Add 3-8 unique reactions per post
+		const reactionCount = 3 + Math.floor(Math.random() * 6);
+		const availableUsers = usersData.map((user) => user.id);
+
+		for (let i = 0; i < reactionCount && availableUsers.length > 0; i++) {
+			// Pick a random user that hasn't reacted to this post yet
+			const randomIndex = Math.floor(Math.random() * availableUsers.length);
+			const userId = availableUsers[randomIndex];
+
+			// Remove this user from available users for this post
+			availableUsers.splice(randomIndex, 1);
+
+			// Track that this user has reacted to this post
+			postReactionTracker.get(post.id).add(userId);
+
 			reactions.push({
-				id: `post_react_${post.id}_${i}`,
-				type: reactTypes[i % reactTypes.length],
+				id: `post_react_${post.id}_${userId}`,
+				type: reactTypes[Math.floor(Math.random() * reactTypes.length)],
 				postId: post.id,
 				userId: userId,
 			});
 		}
 	});
 
-	// Add comment reactions
+	// Add comment reactions (with duplicate prevention)
 	const comments = generateCommentsData();
+	const commentReactionTracker = new Map();
+
 	comments.forEach((comment) => {
+		commentReactionTracker.set(comment.id, new Set());
+
+		// 30% of comments get reactions, max 2 reactions per comment
 		if (Math.random() > 0.7) {
-			// 30% of comments get reactions
-			const userId = `user_${Math.floor(Math.random() * 5) + 1}`;
-			reactions.push({
-				id: `comment_react_${comment.id}`,
-				type: "LIKE",
-				commentId: comment.id,
-				userId: userId,
-			});
+			const reactionCount = 1 + Math.floor(Math.random() * 2);
+			const availableUsers = usersData.map((user) => user.id);
+
+			for (let i = 0; i < reactionCount && availableUsers.length > 0; i++) {
+				const randomIndex = Math.floor(Math.random() * availableUsers.length);
+				const userId = availableUsers[randomIndex];
+
+				// Skip if this user is the comment author (can't react to own comment)
+				if (comment.authorId === userId) {
+					availableUsers.splice(randomIndex, 1);
+					continue;
+				}
+
+				// Remove this user from available users for this comment
+				availableUsers.splice(randomIndex, 1);
+
+				// Track that this user has reacted to this comment
+				commentReactionTracker.get(comment.id).add(userId);
+
+				reactions.push({
+					id: `comment_react_${comment.id}_${userId}`,
+					type: "LIKE", // Comments typically only get likes
+					commentId: comment.id,
+					userId: userId,
+				});
+			}
 		}
 	});
 
