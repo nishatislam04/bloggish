@@ -74,30 +74,40 @@ const categoriesData = [
 		name: "Web Development",
 		slug: "web-development",
 		description: "Latest trends and tutorials in web development",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&h=400&fit=crop&auto=format", // Web development
 	},
 	{
 		id: "cat_2",
 		name: "JavaScript",
 		slug: "javascript",
 		description: "Everything about JavaScript and modern frameworks",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=800&h=400&fit=crop&auto=format", // JavaScript code
 	},
 	{
 		id: "cat_3",
 		name: "React & Next.js",
 		slug: "react-nextjs",
 		description: "React ecosystem and Next.js best practices",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800&h=400&fit=crop&auto=format", // React logo/concept
 	},
 	{
 		id: "cat_4",
 		name: "Backend Development",
 		slug: "backend-development",
 		description: "Server-side programming and database management",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&auto=format", // Server room
 	},
 	{
 		id: "cat_5",
 		name: "DevOps & Tools",
 		slug: "devops-tools",
 		description: "Development tools, deployment, and workflow optimization",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop&auto=format", // DevOps infrastructure
 	},
 ];
 

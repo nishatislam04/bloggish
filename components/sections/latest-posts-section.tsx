@@ -2,8 +2,8 @@
 
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { PostCard } from "@/components/blocks/post-card";
 import { Button } from "@/components/ui/button";
-import { PostCard } from "@/components/ui/post-card";
 import prisma from "@/lib/prisma";
 import type { BlogType } from "@/types/blogs.types";
 

@@ -1,7 +1,7 @@
 import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
+import { PostCard } from "@/components/blocks/post-card";
 import { Button } from "@/components/ui/button";
-import { PostCard } from "@/components/ui/post-card";
 import type { Post } from "@/types/types";
 import { getServerSession } from "@/utils/server-session";
 

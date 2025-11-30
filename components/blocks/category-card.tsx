@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Category } from "@/types/types";
+import type { CategoryType } from "@/types/category.types";
 
 interface CategoryCardProps {
-	category: Category;
+	category: CategoryType;
 }
 
 export function CategoryCard({ category }: CategoryCardProps) {
@@ -11,9 +11,9 @@ export function CategoryCard({ category }: CategoryCardProps) {
 		<Link href={`/categories/${category.slug}`}>
 			<div className="group relative h-32 rounded-lg overflow-hidden cursor-pointer">
 				{/* Background Image */}
-				{category.featuredImage && (
+				{category.coverPhoto && (
 					<Image
-						src={category.featuredImage}
+						src={category.coverPhoto}
 						alt={category.name}
 						fill
 						className="object-cover group-hover:scale-110 transition-transform duration-300"
@@ -29,7 +29,8 @@ export function CategoryCard({ category }: CategoryCardProps) {
 						{category.name}
 					</h3>
 					<p className="text-white/80 text-sm">
-						{category.postCount} {category.postCount === 1 ? "post" : "posts"}
+						{category._count.posts}{" "}
+						{category._count.posts === 1 ? "post" : "posts"}
 					</p>
 				</div>
 			</div>

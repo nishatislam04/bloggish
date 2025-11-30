@@ -17,7 +17,6 @@ import {
 export default async function Home() {
 	const featuredPost = getFeaturedPost();
 	const popularPosts = getPopularPosts(4);
-	const categories = getCategories();
 	const popularAuthors = getPopularAuthors(4);
 	const userBlogs = getUserBlogs(3);
 
@@ -44,7 +43,7 @@ export default async function Home() {
 			<PopularPostsSection posts={popularPosts} />
 
 			{/* Categories Section - need to pre-render it */}
-			<CategoriesSection categories={categories} />
+			<CategoriesSection />
 
 			{/* Popular Authors Section */}
 			<Suspense fallback={<div>Loading...</div>}>
