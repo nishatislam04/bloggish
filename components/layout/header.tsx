@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Search, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -14,6 +14,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SearchSheet } from "@/components/search-sheet";
 import { signOut } from "@/lib/auth-client";
 import { useClientSession } from "@/lib/clientSession";
 
@@ -68,12 +69,7 @@ export function Header() {
 
 					{/* Right Section */}
 					<div className="flex items-center gap-4">
-						<button
-							type="button"
-							className="p-2 hover:bg-muted rounded-lg transition-colors"
-						>
-							<Search className="h-5 w-5" />
-						</button>
+						<SearchSheet />
 
 						{session?.user ? (
 							<DropdownMenu>

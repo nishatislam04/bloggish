@@ -262,3 +262,12 @@ export function getPopularPosts(limit: number = 4): Post[] {
 export function getCategories(): Category[] {
 	return mockCategories;
 }
+
+export function getPopularAuthors(limit: number = 4): Author[] {
+	return Object.values(mockAuthors).slice(0, limit);
+}
+
+export function getUserBlogs(limit: number = 3): Post[] {
+	// Return mock user blogs - in a real app, this would filter by current user
+	return mockPosts.slice(0, limit);
+}
