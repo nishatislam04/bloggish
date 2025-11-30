@@ -1,7 +1,9 @@
 # todos
 
 - [X] create an client hook to use session on client side
+- [ ] fetch blogs listings and authors and category listings
 - [ ] handle authentication form errors on the frontend
+- [ ] configure biome rules
 
 ## feature's
 

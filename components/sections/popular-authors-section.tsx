@@ -1,3 +1,4 @@
+"use cache";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,7 +18,9 @@ const getUserInitials = (name: string) => {
 		.toUpperCase();
 };
 
-export function PopularAuthorsSection({ authors }: PopularAuthorsSectionProps) {
+export async function PopularAuthorsSection({
+	authors,
+}: PopularAuthorsSectionProps) {
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">

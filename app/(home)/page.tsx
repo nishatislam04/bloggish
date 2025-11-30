@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { CategoriesSection } from "@/components/sections/categories-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { LatestPostsSection } from "@/components/sections/latest-posts-section";
@@ -13,7 +14,6 @@ import {
 	getPopularPosts,
 	getUserBlogs,
 } from "@/lib/mock-data";
-import { getServerSession } from "@/utils/server-session";
 
 export default async function Home() {
 	const featuredPost = getFeaturedPost();
@@ -22,32 +22,41 @@ export default async function Home() {
 	const categories = getCategories();
 	const popularAuthors = getPopularAuthors(4);
 	const userBlogs = getUserBlogs(3);
-	const session = await getServerSession();
 
 	return (
 		<>
 			{/* Hero Section */}
 			<section className="container mx-auto px-4 py-8 md:py-12">
-				<HeroSection post={featuredPost} />
+				<Suspense fallback={<div>Loading...</div>}>
+					<HeroSection post={featuredPost} />
+				</Suspense>
 			</section>
 
-			{/* User Blogs Section - Only for authenticated users */}
-			{session && <UserBlogsSection posts={userBlogs} />}
+			{/* User Blogs Section */}
+			<Suspense fallback={<div>Loading...</div>}>
+				<UserBlogsSection posts={userBlogs} />
+			</Suspense>
 
 			{/* Latest Posts Section */}
-			<LatestPostsSection posts={latestPosts} />
+			<Suspense fallback={<div>Loading...</div>}>
+				<LatestPostsSection posts={latestPosts} />
+			</Suspense>
 
-			{/* Popular Posts Section */}
+			{/* Popular Posts Section - need to pre-render it */}
 			<PopularPostsSection posts={popularPosts} />
 
-			{/* Categories Section */}
+			{/* Categories Section - need to pre-render it */}
 			<CategoriesSection categories={categories} />
 
 			{/* Popular Authors Section */}
-			<PopularAuthorsSection authors={popularAuthors} />
+			<Suspense fallback={<div>Loading...</div>}>
+				<PopularAuthorsSection authors={popularAuthors} />
+			</Suspense>
 
 			{/* Newsletter Section */}
-			<NewsletterSection />
+			<Suspense fallback={<div>Loading...</div>}>
+				<NewsletterSection />
+			</Suspense>
 		</>
 	);
 }

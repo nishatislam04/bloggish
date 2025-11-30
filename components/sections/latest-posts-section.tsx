@@ -1,3 +1,5 @@
+"use cache";
+
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,7 @@ interface LatestPostsSectionProps {
 	posts: Post[];
 }
 
-export function LatestPostsSection({ posts }: LatestPostsSectionProps) {
+export async function LatestPostsSection({ posts }: LatestPostsSectionProps) {
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">

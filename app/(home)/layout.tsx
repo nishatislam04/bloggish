@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "../globals.css";
+import { Suspense } from "react";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { Toaster } from "@/components/ui/sonner";
@@ -62,10 +63,14 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
 			>
-				<Header />
+				<Suspense fallback={<div>Loading...</div>}>
+					<Header />
+				</Suspense>
 				<main className="flex-1">{children}</main>
 				<Toaster position="top-center" expand={true} closeButton />
-				<Footer />
+				<Suspense fallback={<div>Loading...</div>}>
+					<Footer />
+				</Suspense>
 			</body>
 		</html>
 	);

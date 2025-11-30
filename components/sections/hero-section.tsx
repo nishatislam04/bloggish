@@ -1,3 +1,4 @@
+"use cache";
 import { ArrowRight, Clock, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +9,7 @@ interface HeroSectionProps {
 	post: Post;
 }
 
-export function HeroSection({ post }: HeroSectionProps) {
+export async function HeroSection({ post }: HeroSectionProps) {
 	return (
 		<section className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-xl">
 			{/* Background Image */}

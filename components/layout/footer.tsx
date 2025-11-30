@@ -1,7 +1,8 @@
+"use cache";
 import { Mail } from "lucide-react";
 import Link from "next/link";
 
-export function Footer() {
+export async function Footer() {
 	const currentYear = new Date().getFullYear();
 
 	return (
