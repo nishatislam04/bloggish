@@ -1,7 +1,6 @@
 # todos
 
-- [ ] add an api for consuming sonner toast
-- [ ] create an client hook to use session on client side
+- [X] create an client hook to use session on client side
 - [ ] handle authentication form errors on the frontend
 
 ## feature's
