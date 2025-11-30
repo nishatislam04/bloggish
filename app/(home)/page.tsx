@@ -7,9 +7,7 @@ import { PopularAuthorsSection } from "@/components/sections/popular-authors-sec
 import { PopularPostsSection } from "@/components/sections/popular-posts-section";
 import { UserBlogsSection } from "@/components/sections/user-blogs-section";
 import {
-	getCategories,
 	getFeaturedPost,
-	getPopularAuthors,
 	getPopularPosts,
 	getUserBlogs,
 } from "@/lib/mock-data";
@@ -17,7 +15,6 @@ import {
 export default async function Home() {
 	const featuredPost = getFeaturedPost();
 	const popularPosts = getPopularPosts(4);
-	const popularAuthors = getPopularAuthors(4);
 	const userBlogs = getUserBlogs(3);
 
 	return (
@@ -47,7 +44,7 @@ export default async function Home() {
 
 			{/* Popular Authors Section */}
 			<Suspense fallback={<div>Loading...</div>}>
-				<PopularAuthorsSection authors={popularAuthors} />
+				<PopularAuthorsSection />
 			</Suspense>
 
 			{/* Newsletter Section */}

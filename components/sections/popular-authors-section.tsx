@@ -3,13 +3,8 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import type { Author } from "@/types/types";
+import prisma from "@/lib/prisma";
 
-interface PopularAuthorsSectionProps {
-	authors: Author[];
-}
-
-// Helper function to get user initials
 const getUserInitials = (name: string) => {
 	return name
 		.split(" ")
@@ -18,9 +13,47 @@ const getUserInitials = (name: string) => {
 		.toUpperCase();
 };
 
-export async function PopularAuthorsSection({
-	authors,
-}: PopularAuthorsSectionProps) {
+export async function PopularAuthorsSection() {
+	const allAuthors = await prisma.author.findMany({
+		take: 100,
+		include: {
+			user: {
+				select: {
+					id: true,
+					firstName: true,
+					lastName: true,
+					image: true,
+					email: true,
+				},
+			},
+			posts: {
+				where: {
+					status: "PUBLISHED",
+					publishedAt: {
+						lte: new Date(),
+					},
+				},
+				select: {
+					viewCount: true,
+				},
+			},
+		},
+	});
+
+	// Calculate totals for each author
+	const authorsWithStats = allAuthors.map((author) => ({
+		...author,
+		totalViews: author.posts.reduce((sum, post) => sum + post.viewCount, 0),
+		postCount: author.posts.length,
+	}));
+
+	// Sort by total views (highest first)
+	const sortedByViews = authorsWithStats.sort(
+		(a, b) => b.totalViews - a.totalViews,
+	);
+
+	const finalAuthors = sortedByViews.slice(0, 4);
+
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">
@@ -44,18 +77,25 @@ export async function PopularAuthorsSection({
 
 				{/* Authors Grid */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-					{authors.map((author) => (
+					{finalAuthors.map((author) => (
 						<div
 							key={author.id}
 							className="p-6 rounded-lg border border-border/40 hover:border-primary/50 hover:bg-muted/50 transition-all duration-300 flex flex-col items-center text-center"
 						>
 							<Avatar className="h-16 w-16 mb-4">
-								<AvatarImage src={author.avatar} alt={author.name} />
-								<AvatarFallback>{getUserInitials(author.name)}</AvatarFallback>
+								<AvatarImage
+									src={author.user.image || ""}
+									alt={author.user.firstName}
+								/>
+								<AvatarFallback>
+									{getUserInitials(
+										`${author.user.firstName} ${author.user.lastName}`,
+									)}
+								</AvatarFallback>
 							</Avatar>
-							<h3 className="font-semibold text-lg mb-1">{author.name}</h3>
+							<h3 className="font-semibold text-lg mb-1">{`${author.user.firstName} ${author.user.lastName}`}</h3>
 							<p className="text-sm text-foreground/60 mb-4 line-clamp-2">
-								{author.email}
+								{author.user.email}
 							</p>
 							<Button variant="outline" size="sm" asChild className="w-full">
 								<Link href={`/author/${author.id}`}>View Profile</Link>
@@ -70,13 +110,6 @@ export async function PopularAuthorsSection({
 							</Button>
 						</div>
 					))}
-				</div>
-
-				{/* Load More Button */}
-				<div className="flex justify-center">
-					<Button size="lg" variant="outline" asChild>
-						<Link href="/authors">Load More Authors</Link>
-					</Button>
 				</div>
 			</div>
 		</section>
