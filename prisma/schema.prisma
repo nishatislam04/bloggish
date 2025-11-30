@@ -59,13 +59,14 @@ model Author {
 }
 
 model Post {
-  id        String  @id @default(cuid())
-  title     String
-  body      Json // For RTE content (2.1.2)
-  excerpt   String? // Short description for preview
-  slug      String  @unique // For SEO-friendly URLs
-  shortLink String  @unique // For sharing (2.1.17)
-  viewCount Int     @default(0)
+  id          String  @id @default(cuid())
+  title       String
+  body        Json // For RTE content (2.1.2)
+  excerpt     String? // Short description for preview
+  slug        String  @unique // For SEO-friendly URLs
+  shortLink   String  @unique // For sharing (2.1.17)
+  viewCount   Int     @default(0)
+  readingTime Int     @default(1)
 
   // Author relationship (2.1.3)
   authorId String

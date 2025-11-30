@@ -4,13 +4,60 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PostCard } from "@/components/ui/post-card";
-import type { Post } from "@/types/types";
+import prisma from "@/lib/prisma";
+import type { BlogType } from "@/types/blogs.types";
 
-interface LatestPostsSectionProps {
-	posts: Post[];
-}
+export async function LatestPostsSection() {
+	const blogs = await prisma.post.findMany({
+		take: 6,
+		orderBy: {
+			createdAt: "desc",
+		},
+		select: {
+			id: true,
+			title: true,
+			slug: true,
+			viewCount: true,
+			readingTime: true,
+			excerpt: true,
+			coverPhoto: true,
+			createdAt: true,
+			author: {
+				select: {
+					user: {
+						select: {
+							id: true,
+							firstName: true,
+							lastName: true,
+							image: true,
+						},
+					},
+				},
+			},
+			category: {
+				select: {
+					id: true,
+					name: true,
+				},
+			},
+			tags: {
+				select: {
+					tag: {
+						select: {
+							id: true,
+							name: true,
+						},
+					},
+				},
+			},
+			reactions: {
+				select: {
+					type: true,
+				},
+			},
+		},
+	});
 
-export async function LatestPostsSection({ posts }: LatestPostsSectionProps) {
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">
@@ -34,8 +81,8 @@ export async function LatestPostsSection({ posts }: LatestPostsSectionProps) {
 
 				{/* Posts Grid */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-					{posts.map((post) => (
-						<PostCard key={post.id} post={post} />
+					{blogs.map((blog: BlogType) => (
+						<PostCard key={blog.id} blog={blog} />
 					))}
 				</div>
 

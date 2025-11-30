@@ -11,8 +11,9 @@ interface UserBlogsSectionProps {
 
 export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
 	const session = await getServerSession();
-	if (!session) return <CreateYourFirstPost />;
 	const hasBlogs = posts && posts.length > 0;
+	if (!session)
+		return <CreateYourFirstPost hasBlogs={hasBlogs} posts={posts} />;
 
 	return (
 		<section className="py-16 md:py-20 bg-muted/30">
@@ -73,29 +74,50 @@ export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
 	);
 }
 
-async function CreateYourFirstPost() {
+async function CreateYourFirstPost({
+	hasBlogs,
+	posts,
+}: {
+	hasBlogs: boolean;
+	posts: Post[];
+}) {
 	return (
-		<div className="text-center py-16">
-			<div className="max-w-md mx-auto">
-				<div className="mb-6 flex justify-center">
-					<div className="p-4 rounded-lg bg-primary/10">
-						<Plus className="h-8 w-8 text-primary" />
+		<section className="py-16 md:py-20 bg-muted/30">
+			<div className="container mx-auto px-4">
+				{/* Header */}
+				<div className="flex items-center justify-between mb-12">
+					<div>
+						<h2 className="text-3xl md:text-4xl font-bold mb-2">Your Blogs</h2>
+						<p className="text-foreground/60">
+							{hasBlogs
+								? `You have ${posts.length} published post${posts.length !== 1 ? "s" : ""}`
+								: "Start sharing your thoughts with the world"}
+						</p>
 					</div>
 				</div>
-				<h3 className="text-xl font-semibold mb-2">
-					Create Your First Blog Post
-				</h3>
-				<p className="text-foreground/60 mb-6">
-					Start sharing your ideas, stories, and insights with our community.
-					Your first post is just a click away!
-				</p>
-				<Button asChild size="lg" className="gap-2">
-					<Link href="/create-post">
-						<Plus className="h-4 w-4" />
-						Create First Post
-					</Link>
-				</Button>
+				<div className="text-center py-16">
+					<div className="max-w-md mx-auto">
+						<div className="mb-6 flex justify-center">
+							<div className="p-4 rounded-lg bg-primary/10">
+								<Plus className="h-8 w-8 text-primary" />
+							</div>
+						</div>
+						<h3 className="text-xl font-semibold mb-2">
+							Create Your First Blog Post
+						</h3>
+						<p className="text-foreground/60 mb-6">
+							Start sharing your ideas, stories, and insights with our
+							community. Your first post is just a click away!
+						</p>
+						<Button asChild size="lg" className="gap-2">
+							<Link href="/create-post">
+								<Plus className="h-4 w-4" />
+								Create First Post
+							</Link>
+						</Button>
+					</div>
+				</div>
 			</div>
-		</div>
+		</section>
 	);
 }

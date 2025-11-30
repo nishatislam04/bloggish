@@ -23,7 +23,7 @@ const usersData = [
 		lastName: "Chen",
 		username: "sarah_tech",
 		image:
-			"https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face",
+			"https://api.dicebear.com/7.x/avataaars/png?seed=sarah_tech&backgroundColor=ffdfbf",
 		emailVerified: true,
 	},
 	{
@@ -33,7 +33,7 @@ const usersData = [
 		lastName: "Rodriguez",
 		username: "alex_dev",
 		image:
-			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+			"https://api.dicebear.com/7.x/avataaars/png?seed=alex_dev&backgroundColor=ffdfbf",
 		emailVerified: true,
 	},
 	{
@@ -43,7 +43,7 @@ const usersData = [
 		lastName: "Patel",
 		username: "maya_design",
 		image:
-			"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+			"https://api.dicebear.com/7.x/avataaars/png?seed=maya_design&backgroundColor=ffdfbf",
 		emailVerified: true,
 	},
 	{
@@ -53,7 +53,7 @@ const usersData = [
 		lastName: "Wilson",
 		username: "james_writes",
 		image:
-			"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+			"https://api.dicebear.com/7.x/avataaars/png?seed=james_writes&backgroundColor=ffdfbf",
 		emailVerified: true,
 	},
 	{
@@ -63,7 +63,7 @@ const usersData = [
 		lastName: "Thompson",
 		username: "lisa_creates",
 		image:
-			"https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
+			"https://api.dicebear.com/7.x/avataaars/png?seed=lisa_creates&backgroundColor=ffdfbf",
 		emailVerified: true,
 	},
 ];
@@ -114,6 +114,29 @@ const tagsData = [
 	{ id: "tag_10", name: "Deployment", slug: "deployment" },
 ];
 
+function calculateReadingTime(content: any): number {
+	if (!content || !content.content) return Math.floor(Math.random() * 5) + 3; // Fallback: 3-7 minutes
+
+	let totalWords = 0;
+
+	function traverse(node: any) {
+		if (node.text) {
+			const words = node.text.trim().split(/\s+/).length;
+			totalWords += words;
+		}
+
+		if (node.content && Array.isArray(node.content)) {
+			node.content.forEach(traverse);
+		}
+	}
+
+	content.content.forEach(traverse);
+
+	const wordsPerMinute = 200;
+	const readingTimeMinutes = Math.ceil(totalWords / wordsPerMinute);
+	return Math.max(1, readingTimeMinutes);
+}
+
 const generatePostsData = () => [
 	// Sarah's posts (Web Development focus)
 	{
@@ -123,8 +146,75 @@ const generatePostsData = () => [
 			"Explore the latest features in Next.js 15 including React 19 support, improved caching, and new developer experience enhancements.",
 		slug: "nextjs-15-getting-started",
 		shortLink: "blog-nextjs15",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		authorId: "user_1",
 		categoryId: "cat_3",
+		readingTime: calculateReadingTime({
+			type: "doc",
+			content: [
+				{
+					type: "paragraph",
+					content: [
+						{
+							type: "text",
+							text: "Next.js 15 brings exciting new features that improve both developer experience and application performance. The latest version includes built-in support for React 19 features, enhanced caching strategies, and improved build times.",
+						},
+					],
+				},
+				{
+					type: "heading",
+					attrs: { level: 2 },
+					content: [{ type: "text", text: "Key Features" }],
+				},
+				{
+					type: "bulletList",
+					content: [
+						{
+							type: "listItem",
+							content: [
+								{
+									type: "paragraph",
+									content: [
+										{
+											type: "text",
+											text: "React 19 support with async transitions",
+										},
+									],
+								},
+							],
+						},
+						{
+							type: "listItem",
+							content: [
+								{
+									type: "paragraph",
+									content: [
+										{
+											type: "text",
+											text: "Improved image optimization with next/image",
+										},
+									],
+								},
+							],
+						},
+						{
+							type: "listItem",
+							content: [
+								{
+									type: "paragraph",
+									content: [
+										{
+											type: "text",
+											text: "Enhanced developer tools and debugging",
+										},
+									],
+								},
+							],
+						},
+					],
+				},
+			],
+		}),
 		body: {
 			type: "doc",
 			content: [
@@ -207,6 +297,21 @@ const generatePostsData = () => [
 		shortLink: "blog-ts-practices",
 		authorId: "user_1",
 		categoryId: "cat_2",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
+		readingTime: calculateReadingTime({
+			type: "doc",
+			content: [
+				{
+					type: "paragraph",
+					content: [
+						{
+							type: "text",
+							text: "Managing large TypeScript applications requires careful planning and consistent practices. Here are some strategies that have worked well in production environments.",
+						},
+					],
+				},
+			],
+		}),
 		body: {
 			type: "doc",
 			content: [
@@ -239,6 +344,21 @@ const generatePostsData = () => [
 		shortLink: "blog-node-apis",
 		authorId: "user_2",
 		categoryId: "cat_4",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
+		readingTime: calculateReadingTime({
+			type: "doc",
+			content: [
+				{
+					type: "paragraph",
+					content: [
+						{
+							type: "text",
+							text: "Managing large TypeScript applications requires careful planning and consistent practices. Here are some strategies that have worked well in production environments.",
+						},
+					],
+				},
+			],
+		}),
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop",
@@ -256,6 +376,7 @@ const generatePostsData = () => [
 		shortLink: "blog-db-patterns",
 		authorId: "user_2",
 		categoryId: "cat_4",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=800&h=400&fit=crop",
@@ -275,6 +396,7 @@ const generatePostsData = () => [
 		shortLink: "blog-tailwind-ui",
 		authorId: "user_3",
 		categoryId: "cat_1",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=800&h=400&fit=crop",
@@ -292,6 +414,7 @@ const generatePostsData = () => [
 		shortLink: "blog-responsive-guide",
 		authorId: "user_3",
 		categoryId: "cat_1",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=400&fit=crop",
@@ -311,6 +434,7 @@ const generatePostsData = () => [
 		shortLink: "blog-tech-writing",
 		authorId: "user_4",
 		categoryId: "cat_5",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=400&fit=crop",
@@ -328,6 +452,7 @@ const generatePostsData = () => [
 		shortLink: "blog-code-docs",
 		authorId: "user_4",
 		categoryId: "cat_5",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1556075798-4825dfaaf498?w=800&h=400&fit=crop",
@@ -347,6 +472,7 @@ const generatePostsData = () => [
 		shortLink: "blog-devops-teams",
 		authorId: "user_5",
 		categoryId: "cat_5",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=400&fit=crop",
@@ -364,6 +490,7 @@ const generatePostsData = () => [
 		shortLink: "blog-fullstack-guide",
 		authorId: "user_5",
 		categoryId: "cat_1",
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto:
 			"https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop",
@@ -381,6 +508,7 @@ const generatePostsData = () => [
 		shortLink: `blog-advanced-${i + 1}`,
 		authorId: `user_${(i % 5) + 1}`,
 		categoryId: `cat_${(i % 5) + 1}`,
+		viewCount: Math.floor(Math.random() * 4000) + 800,
 		body: { type: "doc", content: [] },
 		coverPhoto: `https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=400&fit=crop&${i}`,
 		status: i % 3 === 0 ? ("DRAFT" as PostStatus) : ("PUBLISHED" as PostStatus),
@@ -629,6 +757,28 @@ export async function main() {
 		console.log(`✅ Created user: ${userData.username}`);
 	}
 
+	console.log("✍️ Creating author profiles...");
+	const authorMap = new Map(); // user_id -> author_id
+
+	for (const userData of usersData) {
+		const author = await prisma.author.create({
+			data: {
+				user: { connect: { id: userData.id } },
+				bio: `Professional ${userData.firstName} ${userData.lastName} with expertise in their field.`,
+				profession: "Software Developer",
+				website: `https://${userData.username}.example.com`,
+				socialLinks: {
+					twitter: `@${userData.username}`,
+					github: userData.username,
+				},
+				isVerified: true,
+				featured: Math.random() > 0.7,
+			},
+		});
+		authorMap.set(userData.id, author.id);
+		console.log(`✅ Created author profile for: ${userData.username}`);
+	}
+
 	// Create categories
 	console.log("📂 Creating categories...");
 	for (const category of categoriesData) {
@@ -652,6 +802,7 @@ export async function main() {
 		await prisma.post.create({
 			data: {
 				...post,
+				authorId: authorMap.get("user_1"),
 				tags: {
 					create: tags.map((tagId) => ({
 						tag: { connect: { id: tagId } },

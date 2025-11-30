@@ -4,6 +4,7 @@
 - [ ] fetch blogs listings and authors and category listings
 - [ ] handle authentication form errors on the frontend
 - [ ] configure biome rules
+- [ ] add read-time in post model
 
 ## feature's
 

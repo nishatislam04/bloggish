@@ -9,7 +9,6 @@ import { UserBlogsSection } from "@/components/sections/user-blogs-section";
 import {
 	getCategories,
 	getFeaturedPost,
-	getLatestPosts,
 	getPopularAuthors,
 	getPopularPosts,
 	getUserBlogs,
@@ -17,7 +16,6 @@ import {
 
 export default async function Home() {
 	const featuredPost = getFeaturedPost();
-	const latestPosts = getLatestPosts(6);
 	const popularPosts = getPopularPosts(4);
 	const categories = getCategories();
 	const popularAuthors = getPopularAuthors(4);
@@ -39,7 +37,7 @@ export default async function Home() {
 
 			{/* Latest Posts Section */}
 			<Suspense fallback={<div>Loading...</div>}>
-				<LatestPostsSection posts={latestPosts} />
+				<LatestPostsSection />
 			</Suspense>
 
 			{/* Popular Posts Section - need to pre-render it */}
