@@ -26,11 +26,11 @@ export default function Home() {
 			{/* Latest Posts Section */}
 			<LatestPostsSection posts={latestPosts} />
 
-			{/* Categories Section */}
-			<CategoriesSection categories={categories} />
-
 			{/* Popular Posts Section */}
 			<PopularPostsSection posts={popularPosts} />
+
+			{/* Categories Section */}
+			<CategoriesSection categories={categories} />
 
 			{/* Newsletter Section */}
 			<NewsletterSection />
