@@ -2,18 +2,18 @@ import { CategoriesSection } from "@/components/sections/categories-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { LatestPostsSection } from "@/components/sections/latest-posts-section";
 import { NewsletterSection } from "@/components/sections/newsletter-section";
+import { PopularAuthorsSection } from "@/components/sections/popular-authors-section";
 import { PopularPostsSection } from "@/components/sections/popular-posts-section";
 import { UserBlogsSection } from "@/components/sections/user-blogs-section";
-import { PopularAuthorsSection } from "@/components/sections/popular-authors-section";
 import {
 	getCategories,
 	getFeaturedPost,
 	getLatestPosts,
-	getPopularPosts,
 	getPopularAuthors,
+	getPopularPosts,
 	getUserBlogs,
 } from "@/lib/mock-data";
-import { getServerSession } from "@/lib/server-session";
+import { getServerSession } from "@/utils/server-session";
 
 export default async function Home() {
 	const featuredPost = getFeaturedPost();

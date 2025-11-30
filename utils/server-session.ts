@@ -1,5 +1,7 @@
+import "server-only";
+
 import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
+import { auth } from "@/lib/auth/auth";
 
 export const getServerSession = async () => {
 	const session = await auth.api.getSession({

@@ -2,7 +2,7 @@ import { ArrowRight, Clock, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import type { Post } from "@/lib/types";
+import type { Post } from "@/types/types";
 
 interface HeroSectionProps {
 	post: Post;

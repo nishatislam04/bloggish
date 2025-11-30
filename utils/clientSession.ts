@@ -1,6 +1,6 @@
-"use client";
+import "client-only";
 
-import { useSession } from "./auth-client";
+import { useSession } from "../lib/auth/auth-client";
 
 export const useClientSession = () => {
 	const {

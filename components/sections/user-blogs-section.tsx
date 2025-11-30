@@ -2,7 +2,7 @@ import { ArrowRight, Plus } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PostCard } from "@/components/ui/post-card";
-import type { Post } from "@/lib/types";
+import type { Post } from "@/types/types";
 
 interface UserBlogsSectionProps {
 	posts: Post[];

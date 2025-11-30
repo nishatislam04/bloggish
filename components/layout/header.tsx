@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SearchSheet } from "@/components/layout/search-sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +15,8 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SearchSheet } from "@/components/search-sheet";
-import { signOut } from "@/lib/auth-client";
-import { useClientSession } from "@/lib/clientSession";
+import { signOut } from "@/lib/auth/auth-client";
+import { useClientSession } from "@/utils/clientSession";
 
 const navLinks = [
 	{ href: "/", label: "Home" },

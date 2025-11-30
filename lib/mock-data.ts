@@ -1,4 +1,4 @@
-import type { Author, Category, Post } from "./types";
+import type { Author, Category, Post } from "../types/types";
 
 const mockAuthors: Record<string, Author> = {
 	author1: {
