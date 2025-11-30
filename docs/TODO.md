@@ -9,7 +9,7 @@
 
 ## homepage ui idea's
 
-- [ ] add blogs, authors, on the header navigation. remove about, contact link
+- [X] add blogs, authors, on the header navigation. remove about, contact link
 - [ ] add and update the auth user avatar on the header navigation right side
 - [ ] update footer
 - [ ] when user sign in, after hero section, show a new section with user posts listings with view all button.
@@ -22,3 +22,10 @@
 - [ ] add view counts on post
 - [ ] create a dedicated author model. because not all the users is author
 - [ ] we also need post reaction data
+
+## auth
+
+- [ ] add email verification with otp
+- [ ] add password reset
+- [ ] add forgot password
+- [ ] add google, facebook, github social auth login

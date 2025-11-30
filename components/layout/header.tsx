@@ -2,18 +2,44 @@
 
 import { Menu, Search, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "@/lib/auth-client";
+import { useClientSession } from "@/lib/clientSession";
 
 const navLinks = [
 	{ href: "/", label: "Home" },
+	{ href: "/blogs", label: "Blogs" },
+	{ href: "/authors", label: "Authors" },
 	{ href: "/categories", label: "Categories" },
-	{ href: "/about", label: "About" },
-	{ href: "/contact", label: "Contact" },
 ];
 
+// Function to generate dicebear avatar URL
+const getAvatarUrl = (username: string) => {
+	return `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`;
+};
+
+// Function to get user initials
+const getUserInitials = (firstName: string, lastName?: string) => {
+	return `${firstName.charAt(0)}${lastName ? lastName.charAt(0) : ""}`.toUpperCase();
+};
+
 export function Header() {
+	const router = useRouter();
+	const { session } = useClientSession();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+	console.log(session);
 
 	return (
 		<header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -49,14 +75,77 @@ export function Header() {
 							<Search className="h-5 w-5" />
 						</button>
 
-						<div className="hidden sm:flex gap-2">
-							<Button variant="ghost" size="sm" asChild>
-								<Link href="/sign-in">Sign In</Link>
-							</Button>
-							<Button size="sm" asChild>
-								<Link href="/sign-up">Sign Up</Link>
-							</Button>
-						</div>
+						{session?.user ? (
+							<DropdownMenu>
+								<DropdownMenuTrigger className="hidden lg:flex" asChild>
+									<Button
+										variant="ghost"
+										className="relative h-8 w-8 rounded-full"
+									>
+										<Avatar className="h-8 w-8">
+											<AvatarImage
+												src={
+													session.user.image ||
+													getAvatarUrl(session.user.username)
+												}
+												alt={session.user.name}
+											/>
+											<AvatarFallback>
+												{getUserInitials(session.user.name)}
+											</AvatarFallback>
+										</Avatar>
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent className="w-56" align="end" forceMount>
+									<DropdownMenuLabel className="font-normal">
+										<div className="flex flex-col space-y-1">
+											<p className="text-sm font-medium leading-none">
+												{session.user.username}
+											</p>
+											<p className="text-xs leading-none text-muted-foreground">
+												{session.user.email}
+											</p>
+										</div>
+									</DropdownMenuLabel>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem asChild>
+										<Link href="/profile" className="w-full cursor-pointer">
+											Profile
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuItem asChild>
+										<Link href="/settings" className="w-full cursor-pointer">
+											Settings
+										</Link>
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										className="text-destructive focus:text-destructive cursor-pointer"
+										onClick={async () => {
+											await signOut({
+												fetchOptions: {
+													onSuccess: () => {
+														router.push("/");
+													},
+												},
+											});
+											setIsMenuOpen(false);
+										}}
+									>
+										Sign out
+									</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						) : (
+							<div className="hidden sm:flex gap-2">
+								<Button variant="ghost" size="sm" asChild>
+									<Link href="/sign-in">Sign In</Link>
+								</Button>
+								<Button size="sm" asChild>
+									<Link href="/sign-up">Sign Up</Link>
+								</Button>
+							</div>
+						)}
 
 						{/* Mobile Menu Button */}
 						<button
@@ -86,14 +175,51 @@ export function Header() {
 								{link.label}
 							</Link>
 						))}
-						<div className="flex gap-2 pt-2">
-							<Button variant="ghost" size="sm" className="w-full" asChild>
-								<Link href="/sign-in">Sign In</Link>
-							</Button>
-							<Button size="sm" className="w-full" asChild>
-								<Link href="/sign-up">Sign Up</Link>
-							</Button>
-						</div>
+						{session?.user ? (
+							<div className="space-y-3 pt-2">
+								<div className="px-2 py-2 text-sm text-muted-foreground">
+									Signed in as {session.user.username}
+								</div>
+								<Link
+									href="/profile"
+									className="block px-2 py-2 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-muted rounded transition-colors"
+									onClick={() => setIsMenuOpen(false)}
+								>
+									Profile
+								</Link>
+								<Link
+									href="/settings"
+									className="block px-2 py-2 text-sm font-medium text-foreground/70 hover:text-foreground hover:bg-muted rounded transition-colors"
+									onClick={() => setIsMenuOpen(false)}
+								>
+									Settings
+								</Link>
+								<Button
+									className="block w-full text-left px-2 py-2 text-sm font-medium text-destructive hover:bg-muted rounded transition-colors"
+									onClick={async () => {
+										await signOut({
+											fetchOptions: {
+												onSuccess: () => {
+													router.push("/");
+												},
+											},
+										});
+										setIsMenuOpen(false);
+									}}
+								>
+									Sign Out
+								</Button>
+							</div>
+						) : (
+							<div className="flex gap-2 pt-2">
+								<Button variant="ghost" size="sm" className="w-full" asChild>
+									<Link href="/sign-in">Sign In</Link>
+								</Button>
+								<Button size="sm" className="w-full" asChild>
+									<Link href="/sign-up">Sign Up</Link>
+								</Button>
+							</div>
+						)}
 					</nav>
 				)}
 			</div>
