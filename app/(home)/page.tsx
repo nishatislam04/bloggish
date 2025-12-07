@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { getMoreArticles } from "@/actions/get-more-articles";
 import { CategoriesSection } from "@/components/sections/categories-section";
 import { HeroSection } from "@/components/sections/hero-section";
 import { LatestPostsSection } from "@/components/sections/latest-posts-section";
@@ -16,6 +17,7 @@ export default async function Home() {
 	const featuredPost = getFeaturedPost();
 	const popularPosts = getPopularPosts(4);
 	const userBlogs = getUserBlogs(3);
+	const blogs = getMoreArticles(0, 6);
 
 	return (
 		<>
@@ -32,15 +34,15 @@ export default async function Home() {
 			</Suspense>
 
 			{/* Latest Posts Section */}
-			<Suspense fallback={<div>Loading...</div>}>
-				<LatestPostsSection />
-			</Suspense>
+			<LatestPostsSection blogs={blogs} />
 
 			{/* Popular Posts Section - need to pre-render it */}
 			<PopularPostsSection posts={popularPosts} />
 
 			{/* Categories Section - need to pre-render it */}
-			<CategoriesSection />
+			<Suspense fallback={<div>Loading...</div>}>
+				<CategoriesSection />
+			</Suspense>
 
 			{/* Popular Authors Section */}
 			<Suspense fallback={<div>Loading...</div>}>

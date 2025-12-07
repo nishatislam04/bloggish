@@ -8,6 +8,12 @@ interface BlogProps {
 	variant?: "default" | "compact";
 }
 
+/**
+ * this is homepage latest posts section post card
+ * @param blog - blog data
+ * @param variant - default or compact
+ * @returns post card component
+ */
 export function PostCard({ blog, variant = "default" }: BlogProps) {
 	if (variant === "compact") {
 		return (
