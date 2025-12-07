@@ -2,6 +2,7 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import type { BlogType } from "@/types/blogs.types";
 import { Button } from "../ui/button";
 import LatestBlogsWrapper from "./sub-sections/latest-blogs/latest-blogs-wrapper";
@@ -28,21 +29,13 @@ export function LatestPostsSection({ blogs }: { blogs: Promise<BlogType[]> }) {
 					</Button>
 				</div>
 
-				<Suspense fallback={<div>Loading Latest Posts...</div>}>
-					<LatestBlogsWrapper blogs={blogs} />
-				</Suspense>
-
-				{/* Posts Grid */}
-				{/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-					<Suspense fallback={<div>Loading...</div>}>
-						<HomeBlogListingsLatest blogs={blogs} />
+				<ErrorBoundary
+					fallback={<div>Something went wrong while loading latest posts</div>}
+				>
+					<Suspense fallback={<div>Loading Latest Posts...</div>}>
+						<LatestBlogsWrapper blogs={blogs} />
 					</Suspense>
-				</div> */}
-
-				{/* Load More Button */}
-				{/* <div className="flex justify-center">
-					<LoadMoreBtn handleLoadMore={handleLoadMore} />
-				</div> */}
+				</ErrorBoundary>
 			</div>
 		</section>
 	);
