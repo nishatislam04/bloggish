@@ -1,13 +1,21 @@
-"use client";
 import { ArrowRight } from "lucide-react";
+import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import type { BlogType } from "@/types/blogs.types";
 import { Button } from "../ui/button";
-import LatestBlogsWrapper from "./sub-sections/latest-blogs/latest-blogs-wrapper";
+import { LatestBlogsGrid } from "./sub-sections/latest-blogs/latest-blogs-grid";
+import { LatestBlogsLoadMore } from "./sub-sections/latest-blogs/latest-blogs-load-more";
 
-export function LatestPostsSection({ blogs }: { blogs: Promise<BlogType[]> }) {
+export async function LatestPostsSection({
+	blogs,
+}: {
+	blogs: Promise<BlogType[]>;
+}) {
+	"use cache";
+	cacheLife("hours");
+	cacheTag("latest-posts");
+
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">
@@ -29,13 +37,15 @@ export function LatestPostsSection({ blogs }: { blogs: Promise<BlogType[]> }) {
 					</Button>
 				</div>
 
-				<ErrorBoundary
-					fallback={<div>Something went wrong while loading latest posts</div>}
-				>
-					<Suspense fallback={<div>Loading Latest Posts...</div>}>
-						<LatestBlogsWrapper blogs={blogs} />
-					</Suspense>
-				</ErrorBoundary>
+				{/* Posts Grid */}
+				<Suspense fallback={<div>Loading Latest Posts...</div>}>
+					<LatestBlogsGrid blogs={blogs} />
+				</Suspense>
+
+				{/* Load More Button */}
+				<Suspense fallback={null}>
+					<LatestBlogsLoadMore />
+				</Suspense>
 			</div>
 		</section>
 	);

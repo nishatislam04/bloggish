@@ -1,8 +1,12 @@
 "use cache";
+import { cacheLife, cacheTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import type { BlogType } from "@/types/blogs.types";
 
 export async function getMoreArticles(skip: number = 0, take: number = 3) {
+	cacheLife("hours");
+	cacheTag("posts", `posts-${Math.floor(skip / take)}`);
+
 	const blogsListings = await prisma.post.findMany({
 		skip,
 		take,
