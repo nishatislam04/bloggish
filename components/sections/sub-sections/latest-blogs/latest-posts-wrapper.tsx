@@ -1,8 +1,7 @@
 "use client";
 import { use, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
-import { getMoreArticles } from "@/actions/get-more-articles";
+import { loadMoreLatestPosts } from "@/actions/load-more-latest-posts";
 import type { PostType } from "@/types/blogs.types";
 import LoadMoreBtn from "../../../buttons/load-more-btn";
 import { LatestPostsListings } from "./latest-posts-listings";
@@ -20,7 +19,7 @@ export default function LatestPostsWrapper({
 	const handleLoadMore = async () => {
 		setIsLoading(true);
 		try {
-			const newPosts = await getMoreArticles(postsListings.length, 3);
+			const newPosts = await loadMoreLatestPosts(postsListings.length, 3);
 			setPostsListings((prev) => [...prev, ...newPosts]);
 		} catch (error) {
 			console.error("Error loading more articles:", error);
@@ -32,11 +31,7 @@ export default function LatestPostsWrapper({
 	return (
 		<>
 			{/* Posts Grid */}
-			<ErrorBoundary
-				fallback={<div>Something went wrong while loading latest posts</div>}
-			>
-				<LatestPostsListings posts={postsListings} />
-			</ErrorBoundary>
+			<LatestPostsListings posts={postsListings} />
 
 			{/* Load More Button */}
 			<div className="flex justify-center">

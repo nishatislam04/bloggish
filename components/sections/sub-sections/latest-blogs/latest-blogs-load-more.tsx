@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { getMoreArticles } from "@/actions/get-more-articles";
+import { getMoreArticles } from "@/actions/load-more-latest-posts";
 import { Button } from "@/components/ui/button";
 
 export function LatestBlogsLoadMore() {

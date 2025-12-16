@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-// import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 import type { PostType } from "@/types/blogs.types";
@@ -11,10 +10,6 @@ export async function LatestPostsSection({
 }: {
 	latestPosts: Promise<PostType[]>;
 }) {
-	// "use cache";
-	// cacheLife("hours");
-	// cacheTag("latest-posts");
-
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">

@@ -1,5 +1,3 @@
-// "use cache";
-// import { cacheLife, cacheTag } from "next/cache";
 import prisma from "@/lib/prisma";
 import type { PostType } from "@/types/blogs.types";
 
@@ -11,10 +9,7 @@ import type { PostType } from "@/types/blogs.types";
  * @param take - Number of posts to fetch (limit)
  * @returns Array of blog post objects with selected fields
  */
-export async function getMoreArticles(skip: number = 0, take: number = 3) {
-	// cacheLife("hours");
-	// cacheTag("posts", `posts-${Math.floor(skip / take)}`);
-
+export async function loadMoreLatestPosts(skip: number = 0, take: number = 3) {
 	const blogsListings = await prisma.post.findMany({
 		skip,
 		take,
