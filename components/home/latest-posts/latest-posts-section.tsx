@@ -1,9 +1,9 @@
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
+import { Button } from "@/components/ui/button";
 import type { PostType } from "@/types/blogs.types";
-import { Button } from "../ui/button";
-import LatestPostsWrapper from "./sub-sections/latest-blogs/latest-posts-wrapper";
+import LatestPostsWrapper from "./_components/latest-posts-wrapper";
 
 export async function LatestPostsSection({
 	latestPosts,

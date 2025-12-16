@@ -2,8 +2,8 @@
 import { use, useState } from "react";
 import { toast } from "sonner";
 import { loadMoreLatestPosts } from "@/actions/load-more-latest-posts";
+import LoadMoreBtn from "@/components/buttons/load-more-btn";
 import type { PostType } from "@/types/blogs.types";
-import LoadMoreBtn from "../../../buttons/load-more-btn";
 import { LatestPostsListings } from "./latest-posts-listings";
 
 export default function LatestPostsWrapper({

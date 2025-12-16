@@ -1,12 +1,12 @@
 import { Suspense } from "react";
 import { loadMoreLatestPosts } from "@/actions/load-more-latest-posts";
-import { CategoriesSection } from "@/components/sections/categories-section";
-import { HeroSection } from "@/components/sections/hero-section";
-import { LatestPostsSection } from "@/components/sections/latest-posts-section";
-import { NewsletterSection } from "@/components/sections/newsletter-section";
-import { PopularAuthorsSection } from "@/components/sections/popular-authors-section";
-import { PopularPostsSection } from "@/components/sections/popular-posts-section";
-import { UserBlogsSection } from "@/components/sections/user-blogs-section";
+import { CategoriesSection } from "@/components/home/categories-section";
+import { HeroSection } from "@/components/home/hero-section";
+import { LatestPostsSection } from "@/components/home/latest-posts/latest-posts-section";
+import { NewsletterSection } from "@/components/home/newsletter-section";
+import { PopularAuthorsSection } from "@/components/home/popular-authors-section";
+import { PopularPostsSection } from "@/components/home/popular-posts-section";
+import { UserBlogsSection } from "@/components/home/user-blogs-section";
 import {
 	getFeaturedPost,
 	getPopularPosts,
@@ -37,10 +37,12 @@ export default async function Home() {
 			<LatestPostsSection latestPosts={latestPosts} />
 
 			{/* Popular Posts Section - need to pre-render it */}
-			<PopularPostsSection posts={popularPosts} />
+			<Suspense fallback={<div>Loading Popular Posts...</div>}>
+				<PopularPostsSection posts={popularPosts} />
+			</Suspense>
 
 			{/* Categories Section - need to pre-render it */}
-			<Suspense fallback={<div>Loading...</div>}>
+			<Suspense fallback={<div>Loading Categories...</div>}>
 				<CategoriesSection />
 			</Suspense>
 
