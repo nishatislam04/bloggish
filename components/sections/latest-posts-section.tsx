@@ -1,20 +1,19 @@
 import { ArrowRight } from "lucide-react";
-import { cacheLife, cacheTag } from "next/cache";
+// import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
-import type { BlogType } from "@/types/blogs.types";
+import type { PostType } from "@/types/blogs.types";
 import { Button } from "../ui/button";
-import { LatestBlogsGrid } from "./sub-sections/latest-blogs/latest-blogs-grid";
-import { LatestBlogsLoadMore } from "./sub-sections/latest-blogs/latest-blogs-load-more";
+import LatestPostsWrapper from "./sub-sections/latest-blogs/latest-posts-wrapper";
 
 export async function LatestPostsSection({
-	blogs,
+	latestPosts,
 }: {
-	blogs: Promise<BlogType[]>;
+	latestPosts: Promise<PostType[]>;
 }) {
-	"use cache";
-	cacheLife("hours");
-	cacheTag("latest-posts");
+	// "use cache";
+	// cacheLife("hours");
+	// cacheTag("latest-posts");
 
 	return (
 		<section className="py-16 md:py-20">
@@ -37,14 +36,9 @@ export async function LatestPostsSection({
 					</Button>
 				</div>
 
-				{/* Posts Grid */}
+				{/* Latest blog posts with load more functionality */}
 				<Suspense fallback={<div>Loading Latest Posts...</div>}>
-					<LatestBlogsGrid blogs={blogs} />
-				</Suspense>
-
-				{/* Load More Button */}
-				<Suspense fallback={null}>
-					<LatestBlogsLoadMore />
+					<LatestPostsWrapper latestPosts={latestPosts} />
 				</Suspense>
 			</div>
 		</section>

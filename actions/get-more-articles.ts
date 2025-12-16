@@ -1,11 +1,19 @@
-"use cache";
-import { cacheLife, cacheTag } from "next/cache";
+// "use cache";
+// import { cacheLife, cacheTag } from "next/cache";
 import prisma from "@/lib/prisma";
-import type { BlogType } from "@/types/blogs.types";
+import type { PostType } from "@/types/blogs.types";
 
+/**
+ * Fetches a list of blog posts with pagination support.
+ * Used in home page to load additional blog posts.
+ *
+ * @param skip - Number of posts to skip (for pagination)
+ * @param take - Number of posts to fetch (limit)
+ * @returns Array of blog post objects with selected fields
+ */
 export async function getMoreArticles(skip: number = 0, take: number = 3) {
-	cacheLife("hours");
-	cacheTag("posts", `posts-${Math.floor(skip / take)}`);
+	// cacheLife("hours");
+	// cacheTag("posts", `posts-${Math.floor(skip / take)}`);
 
 	const blogsListings = await prisma.post.findMany({
 		skip,
@@ -58,5 +66,5 @@ export async function getMoreArticles(skip: number = 0, take: number = 3) {
 		},
 	});
 
-	return blogsListings as BlogType[];
+	return blogsListings as PostType[];
 }

@@ -1,27 +1,27 @@
 "use client";
-import { Suspense, use, useState } from "react";
+import { use, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { toast } from "sonner";
 import { getMoreArticles } from "@/actions/get-more-articles";
-import type { BlogType } from "@/types/blogs.types";
-import { HomeBlogListingsLatest } from "./home-blog-listings-latest";
-import LoadMoreBtn from "./load-more-btn";
+import type { PostType } from "@/types/blogs.types";
+import LoadMoreBtn from "../../../buttons/load-more-btn";
+import { LatestPostsListings } from "./latest-posts-listings";
 
-export default function LatestBlogsWrapper({
-	blogs,
+export default function LatestPostsWrapper({
+	latestPosts,
 }: {
-	blogs: Promise<BlogType[]>;
+	latestPosts: Promise<PostType[]>;
 }) {
-	const [blogsListings, setBlogsListings] = useState<BlogType[]>(
-		use(blogs) || [],
+	const [postsListings, setPostsListings] = useState<PostType[]>(
+		use(latestPosts) || [],
 	);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleLoadMore = async () => {
 		setIsLoading(true);
 		try {
-			const newBlogs = await getMoreArticles(blogsListings.length, 3);
-			setBlogsListings((prev) => [...prev, ...newBlogs]);
+			const newPosts = await getMoreArticles(postsListings.length, 3);
+			setPostsListings((prev) => [...prev, ...newPosts]);
 		} catch (error) {
 			console.error("Error loading more articles:", error);
 			toast.error("Error loading more articles");
@@ -35,14 +35,16 @@ export default function LatestBlogsWrapper({
 			<ErrorBoundary
 				fallback={<div>Something went wrong while loading latest posts</div>}
 			>
-				<Suspense fallback={<div>Loading...</div>}>
-					<HomeBlogListingsLatest blogs={blogsListings} />
-				</Suspense>
+				<LatestPostsListings posts={postsListings} />
 			</ErrorBoundary>
 
 			{/* Load More Button */}
 			<div className="flex justify-center">
-				<LoadMoreBtn handleLoadMore={handleLoadMore} isLoading={isLoading} />
+				<LoadMoreBtn
+					label="Load More Articles"
+					handleLoadMore={handleLoadMore}
+					isLoading={isLoading}
+				/>
 			</div>
 		</>
 	);

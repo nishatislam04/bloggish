@@ -1,6 +1,6 @@
 import type { ReactType } from "@/app/generated/prisma/enums";
 
-export type BlogType = {
+export type PostType = {
 	id: string;
 	title: string;
 	slug: string;

@@ -17,7 +17,7 @@ export default async function Home() {
 	const featuredPost = getFeaturedPost();
 	const popularPosts = getPopularPosts(4);
 	const userBlogs = getUserBlogs(3);
-	const blogs = getMoreArticles(0, 6);
+	const latestPosts = getMoreArticles(0, 6);
 
 	return (
 		<>
@@ -34,7 +34,7 @@ export default async function Home() {
 			</Suspense>
 
 			{/* Latest Posts Section */}
-			<LatestPostsSection blogs={blogs} />
+			<LatestPostsSection latestPosts={latestPosts} />
 
 			{/* Popular Posts Section - need to pre-render it */}
 			<PopularPostsSection posts={popularPosts} />

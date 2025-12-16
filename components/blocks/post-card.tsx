@@ -1,10 +1,10 @@
 import { Clock, Eye, Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import type { BlogType } from "@/types/blogs.types";
+import type { PostType } from "@/types/blogs.types";
 
 interface BlogProps {
-	blog: BlogType;
+	blog: PostType;
 	variant?: "default" | "compact";
 }
 
