@@ -30,7 +30,7 @@ export default function LatestPostsWrapper({
 	};
 	return (
 		<>
-			{/* Posts Grid */}
+			{/* Latest Post Listings */}
 			<LatestPostsListings posts={postsListings} />
 
 			{/* Load More Button */}

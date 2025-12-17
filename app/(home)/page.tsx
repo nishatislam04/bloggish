@@ -4,7 +4,7 @@ import { CategoriesSection } from "@/components/home/categories-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { LatestPostsSection } from "@/components/home/latest-posts/latest-posts-section";
 import { NewsletterSection } from "@/components/home/newsletter-section";
-import { PopularAuthorsSection } from "@/components/home/popular-authors-section";
+import { PopularAuthorsSection } from "@/components/home/popular-authors/popular-authors-section";
 import { PopularPostsSection } from "@/components/home/popular-posts-section";
 import { UserBlogsSection } from "@/components/home/user-blogs-section";
 import {
@@ -33,10 +33,10 @@ export default async function Home() {
 				<UserBlogsSection posts={userBlogs} />
 			</Suspense>
 
-			{/* Latest Posts Section */}
+			{/* Latest Posts Section -- COMPLETE --*/}
 			<LatestPostsSection latestPosts={latestPosts} />
 
-			{/* Popular Posts Section - need to pre-render it */}
+			{/* Popular Posts This Week Section - need to pre-render it */}
 			<Suspense fallback={<div>Loading Popular Posts...</div>}>
 				<PopularPostsSection posts={popularPosts} />
 			</Suspense>
@@ -47,9 +47,7 @@ export default async function Home() {
 			</Suspense>
 
 			{/* Popular Authors Section */}
-			<Suspense fallback={<div>Loading...</div>}>
-				<PopularAuthorsSection />
-			</Suspense>
+			<PopularAuthorsSection />
 
 			{/* Newsletter Section */}
 			<Suspense fallback={<div>Loading...</div>}>
