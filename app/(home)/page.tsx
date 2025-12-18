@@ -6,13 +6,12 @@ import { LatestPostsSection } from "@/components/home/latest-posts/latest-posts-
 import { NewsletterSection } from "@/components/home/newsletter-section";
 import { PopularAuthorsSection } from "@/components/home/popular-authors/popular-authors-section";
 import { PopularPostsSection } from "@/components/home/popular-posts-section";
-import { UserBlogsSection } from "@/components/home/user-blogs-section";
+import { UserPostsSection } from "@/components/home/user-posts/user-posts-section";
 import { getFeaturedPost, getPopularPosts } from "@/lib/mock-data";
 
 export default async function Home() {
 	const featuredPost = getFeaturedPost();
 	const popularPosts = getPopularPosts(4);
-	const userPosts = [];
 	const latestPosts = loadMoreLatestPosts(0, 6);
 
 	return (
@@ -24,9 +23,9 @@ export default async function Home() {
 				</Suspense>
 			</section>
 
-			{/* User Blogs Section */}
-			<Suspense fallback={<div>Loading user posts...</div>}>
-				<UserBlogsSection userPosts={userPosts} />
+			{/* User Post Section */}
+			<Suspense fallback={<div>loading user post</div>}>
+				<UserPostsSection />
 			</Suspense>
 
 			{/* Latest Posts Section -- COMPLETE --*/}
