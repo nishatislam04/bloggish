@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { hashPassword } from "better-auth/crypto";
-import { PrismaClient } from "../app/generated/prisma/client";
+import { type Prisma, PrismaClient } from "../app/generated/prisma/client";
 
 // Prisma setup (uses same adapter/config as the app)
 const adapter = new PrismaPg({
@@ -23,6 +23,40 @@ const primaryUser = {
 		"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&auto=format&fit=crop",
 	emailVerified: true,
 };
+
+// Additional community users (not primary auth) to populate relational data
+const additionalUsers = [
+	{
+		id: "user_safiya_frontend",
+		email: "safiya.rahman@example.com",
+		username: "safiya_ui",
+		firstName: "Safiya",
+		lastName: "Rahman",
+		image:
+			"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&auto=format&fit=crop&sat=-20",
+		emailVerified: true,
+	},
+	{
+		id: "user_aarav_backend",
+		email: "aarav.patel@example.com",
+		username: "aarav_backend",
+		firstName: "Aarav",
+		lastName: "Patel",
+		image:
+			"https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=400&auto=format&fit=crop",
+		emailVerified: true,
+	},
+	{
+		id: "user_megan_pm",
+		email: "megan.cho@example.com",
+		username: "megan_product",
+		firstName: "Megan",
+		lastName: "Cho",
+		image:
+			"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&auto=format&fit=crop&hue=-10",
+		emailVerified: true,
+	},
+];
 
 // Categories and tags to make posts relatable and cover schema needs
 const categories = [
@@ -58,14 +92,41 @@ const tags = [
 	{ id: "tag_ui", name: "UI/UX", slug: "ui-ux" },
 ];
 
-// Helper to produce editor-friendly JSON body
-type ProseDoc = {
-	type: "doc";
-	content: {
-		type: "paragraph";
-		content: { type: "text"; text: string }[];
-	}[];
+// Helper to produce editor-friendly JSON type
+type ReactType = "LIKE" | "LOVE" | "WOW" | "HAHA" | "SAD" | "ANGRY";
+
+// Types for rich text content that's compatible with Prisma's Json type
+type ProseNode = {
+	type: string;
+	text?: string;
+	[key: string]: unknown;
 };
+
+type ProseContent = {
+	type: string;
+	content?: ProseNode[];
+	[key: string]: unknown;
+};
+
+type ProseDoc = {
+	type: string;
+	content: ProseContent[];
+	[key: string]: unknown;
+};
+
+// Interface for post data
+interface PostData {
+	id: string;
+	title: string;
+	excerpt: string;
+	slug: string;
+	shortLink: string;
+	categoryId: string;
+	coverPhoto: string;
+	body: ProseDoc;
+	tags: string[];
+	authorUserId?: string;
+}
 
 const prose = (paragraphs: string[]): ProseDoc => ({
 	type: "doc",
@@ -75,7 +136,7 @@ const prose = (paragraphs: string[]): ProseDoc => ({
 	})),
 });
 
-const posts = [
+const posts: PostData[] = [
 	{
 		id: "post_cache_patterns",
 		title: "Cache Patterns for Personal Blogs with Next.js",
@@ -169,12 +230,147 @@ const images = [
 	},
 ];
 
+// Additional posts for community authors
+const communityPosts: PostData[] = [
+	{
+		id: "post_accessibility",
+		title: "Practical Accessibility Checks for Frontend Teams",
+		excerpt:
+			"Run fast a11y sweeps before shipping: color contrast, focus order, screen reader labels, and motion preferences.",
+		slug: "frontend-accessibility-checklist",
+		shortLink: "a11y-checks",
+		categoryId: "cat_web",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1489515217757-5fd1be406fef?w=1600&auto=format&fit=crop",
+		body: prose([
+			"Adopt a Friday a11y sweep: tab through flows, run automated checks, and verify focus outlines.",
+			"Pair designers and engineers to review contrast and motion-reduction toggles.",
+		]),
+		tags: ["tag_ui"],
+		authorUserId: "user_safiya_frontend",
+	},
+	{
+		id: "post_api_errors",
+		title: "Designing API Errors That Help Frontend Engineers",
+		excerpt:
+			"Error codes, remediation tips, and correlation IDs that make debugging production issues faster.",
+		slug: "api-error-design",
+		shortLink: "api-errors",
+		categoryId: "cat_web",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1483478550801-ceba5fe50e8e?w=1600&auto=format&fit=crop",
+		body: prose([
+			"Include actionable hints and links to runbooks in error payloads.",
+			"Keep error envelopes consistent: code, message, hint, trace id.",
+		]),
+		tags: ["tag_cache", "tag_ts"],
+		authorUserId: "user_aarav_backend",
+	},
+	{
+		id: "post_research",
+		title: "How to Run Lightweight UX Research in Two Days",
+		excerpt:
+			"Script, recruit, and synthesize fast feedback for a small feature before shipping.",
+		slug: "lightweight-ux-research",
+		shortLink: "ux-research",
+		categoryId: "cat_web",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1600&auto=format&fit=crop",
+		body: prose([
+			"Draft a 30-minute interview with 5 target users and capture friction points.",
+			"Turn observations into 3 prioritized fixes and a follow-up metric.",
+		]),
+		tags: ["tag_ui"],
+		authorUserId: "user_megan_pm",
+	},
+];
+
+// Comment seeds: replies included
+const comments = [
+	{
+		id: "cmt_1",
+		content: "Love the cache tagging tip—using it today!",
+		postId: "post_cache_patterns",
+		authorId: "user_safiya_frontend",
+	},
+	{
+		id: "cmt_2",
+		content: "Would you store preview data separately for drafts?",
+		postId: "post_cache_patterns",
+		authorId: "user_aarav_backend",
+		parentId: "cmt_1",
+	},
+	{
+		id: "cmt_3",
+		content: "Correlation IDs saved us last week. Great reminders.",
+		postId: "post_api_errors",
+		authorId: "user_megan_pm",
+	},
+	{
+		id: "cmt_4",
+		content: "Please add an example payload structure!",
+		postId: "post_api_errors",
+		authorId: "user_nishat_islam",
+	},
+];
+
+// Post and comment reactions with proper typing
+interface PostReaction {
+	id: string;
+	postId: string;
+	userId: string;
+	type: ReactType;
+}
+
+interface CommentReaction {
+	id: string;
+	commentId: string;
+	userId: string;
+	type: ReactType;
+}
+
+const postReactions: PostReaction[] = [
+	{
+		id: "pr_1",
+		postId: "post_cache_patterns",
+		userId: "user_safiya_frontend",
+		type: "LOVE",
+	},
+	{
+		id: "pr_2",
+		postId: "post_api_errors",
+		userId: "user_nishat_islam",
+		type: "LIKE",
+	},
+	{
+		id: "pr_3",
+		postId: "post_research",
+		userId: "user_aarav_backend",
+		type: "WOW",
+	},
+];
+
+const commentReactions: CommentReaction[] = [
+	{
+		id: "cr_1",
+		commentId: "cmt_1",
+		userId: "user_nishat_islam",
+		type: "LIKE",
+	},
+	{
+		id: "cr_2",
+		commentId: "cmt_4",
+		userId: "user_aarav_backend",
+		type: "HAHA",
+	},
+];
+
 // Simple reading time estimator (rounded up)
 const estimateReadingTime = (body: ProseDoc) => {
 	let words = 0;
 	body.content?.forEach((block) => {
 		block.content?.forEach((child) => {
-			if (child.text?.trim()) {
+			if (child?.text?.trim()) {
 				words += child.text.trim().split(/\s+/).length;
 			}
 		});
@@ -238,8 +434,15 @@ async function main() {
 		},
 	});
 
-	// 3) Create author profile linked to the user
-	const author = await prisma.author.create({
+	// 3) Create additional community users (no auth accounts needed)
+	console.log("👥 creating community users");
+	for (const user of additionalUsers) {
+		await prisma.user.create({ data: user });
+	}
+
+	// 4) Create author profiles linked to users
+	const authorIds = new Map<string, string>();
+	const primaryAuthor = await prisma.author.create({
 		data: {
 			user: { connect: { id: primaryUser.id } },
 			bio: "Full-stack engineer sharing notes on Next.js, auth, and DX.",
@@ -254,8 +457,27 @@ async function main() {
 			featured: true,
 		},
 	});
+	authorIds.set(primaryUser.id, primaryAuthor.id);
 
-	// 4) Seed categories and tags
+	for (const user of additionalUsers) {
+		const author = await prisma.author.create({
+			data: {
+				user: { connect: { id: user.id } },
+				bio: `${user.firstName} ${user.lastName} shares lessons from recent projects.`,
+				profession: "Software Practitioner",
+				website: `https://${user.username}.example.com`,
+				socialLinks: {
+					twitter: `@${user.username}`,
+					github: user.username,
+				},
+				isVerified: true,
+				featured: false,
+			},
+		});
+		authorIds.set(user.id, author.id);
+	}
+
+	// 5) Seed categories and tags
 	for (const category of categories) {
 		await prisma.category.create({ data: category });
 	}
@@ -263,8 +485,15 @@ async function main() {
 		await prisma.tag.create({ data: tag });
 	}
 
-	// 5) Create posts with tag relations
+	// 6) Create primary user's posts with tag relations
 	for (const post of posts) {
+		const authorId = authorIds.get(primaryUser.id);
+		if (!authorId) {
+			throw new Error(
+				`Primary author not found for user ID: ${primaryUser.id}`,
+			);
+		}
+
 		await prisma.post.create({
 			data: {
 				id: post.id,
@@ -272,10 +501,10 @@ async function main() {
 				excerpt: post.excerpt,
 				slug: post.slug,
 				shortLink: post.shortLink,
-				body: post.body,
+				body: post.body as unknown as Prisma.InputJsonValue,
 				coverPhoto: post.coverPhoto,
 				category: { connect: { id: post.categoryId } },
-				author: { connect: { id: author.id } },
+				author: { connect: { id: authorId } },
 				readingTime: estimateReadingTime(post.body),
 				status: "PUBLISHED",
 				privacy: "PUBLIC",
@@ -289,9 +518,71 @@ async function main() {
 		});
 	}
 
-	// 6) Optional images
+	// 7) Create community posts with tag relations
+	for (const post of communityPosts) {
+		if (!post.authorUserId) {
+			console.warn(`Skipping post ${post.id} - missing authorUserId`);
+			continue;
+		}
+
+		const authorId = authorIds.get(post.authorUserId);
+		if (!authorId) {
+			throw new Error(`Author not found for user ID: ${post.authorUserId}`);
+		}
+
+		await prisma.post.create({
+			data: {
+				id: post.id,
+				title: post.title,
+				excerpt: post.excerpt,
+				slug: post.slug,
+				shortLink: post.shortLink,
+				body: post.body as unknown as Prisma.InputJsonValue,
+				coverPhoto: post.coverPhoto,
+				category: { connect: { id: post.categoryId } },
+				author: { connect: { id: authorId } },
+				readingTime: estimateReadingTime(post.body),
+				status: "PUBLISHED",
+				privacy: "PUBLIC",
+				publishedAt: new Date(),
+				tags: {
+					create: post.tags.map((tagId) => ({
+						tag: { connect: { id: tagId } },
+					})),
+				},
+			},
+		});
+	}
+
+	// 8) Optional images
 	for (const image of images) {
 		await prisma.image.create({ data: image });
+	}
+
+	// 9) Comments with optional parents
+	for (const comment of comments) {
+		await prisma.comment.create({
+			data: {
+				id: comment.id,
+				content: comment.content,
+				author: { connect: { id: comment.authorId } },
+				post: { connect: { id: comment.postId } },
+				parent: comment.parentId
+					? { connect: { id: comment.parentId } }
+					: undefined,
+				status: "APPROVED",
+			},
+		});
+	}
+
+	// 10) Post reactions
+	for (const reaction of postReactions) {
+		await prisma.postReact.create({ data: reaction });
+	}
+
+	// 11) Comment reactions
+	for (const reaction of commentReactions) {
+		await prisma.commentReact.create({ data: reaction });
 	}
 
 	console.log("✅ Seed complete. You can now sign in with:");
