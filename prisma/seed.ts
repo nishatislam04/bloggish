@@ -78,6 +78,51 @@ const categories = [
 		coverPhoto:
 			"https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&auto=format&fit=crop",
 	},
+	{
+		id: "cat_ai",
+		name: "AI & Machine Learning",
+		slug: "ai-ml",
+		description:
+			"Exploring artificial intelligence, machine learning models, and their practical applications in development.",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1677442135136-760c813d0c7e?w=1200&auto=format&fit=crop",
+	},
+	{
+		id: "cat_devops",
+		name: "DevOps & Cloud",
+		slug: "devops-cloud",
+		description:
+			"CI/CD pipelines, containerization, cloud services, and infrastructure as code for modern development workflows.",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1551434678-e076c223a692?w=1200&auto=format&fit=crop",
+	},
+	{
+		id: "cat_mobile",
+		name: "Mobile Development",
+		slug: "mobile-dev",
+		description:
+			"Cross-platform and native mobile app development with React Native, Flutter, Swift, and Kotlin.",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=1200&auto=format&fit=crop",
+	},
+	{
+		id: "cat_security",
+		name: "Cybersecurity",
+		slug: "cybersecurity",
+		description:
+			"Best practices for securing applications, ethical hacking, and protecting user data in the digital age.",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1200&auto=format&fit=crop",
+	},
+	{
+		id: "cat_blockchain",
+		name: "Blockchain & Web3",
+		slug: "blockchain-web3",
+		description:
+			"Decentralized applications, smart contracts, and the future of the decentralized web.",
+		coverPhoto:
+			"https://images.unsplash.com/photo-1639762681057-408e52192e55?w=1200&auto=format&fit=crop",
+	},
 ];
 
 const tags = [
