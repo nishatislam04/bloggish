@@ -5,15 +5,16 @@ import { Button } from "@/components/ui/button";
 import type { Post } from "@/types/types";
 import { getServerSession } from "@/utils/server-session";
 
-interface UserBlogsSectionProps {
-	posts: Post[];
-}
+// we need to properly handle `createyourfirstpost` with various scenario
+// 1. user is not logged in
+// 2. user is logged in, but no post published yet
+// 3. user is logged in, have posts, how many posts to show
 
-export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
+export async function UserBlogsSection({ userPosts }: { userPosts: [] }) {
 	const session = await getServerSession();
-	const hasBlogs = posts && posts.length > 0;
+	const hasPosts = userPosts && userPosts.length > 0;
 	if (!session)
-		return <CreateYourFirstPost hasBlogs={hasBlogs} posts={posts} />;
+		return <CreateYourFirstPost hasPosts={hasPosts} posts={userPosts} />;
 
 	return (
 		<section className="py-16 md:py-20 bg-muted/30">
@@ -23,13 +24,13 @@ export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
 					<div>
 						<h2 className="text-3xl md:text-4xl font-bold mb-2">Your Blogs</h2>
 						<p className="text-foreground/60">
-							{hasBlogs
-								? `You have ${posts.length} published post${posts.length !== 1 ? "s" : ""}`
+							{hasPosts
+								? `You have ${userPosts.length} published post${userPosts.length !== 1 ? "s" : ""}`
 								: "Start sharing your thoughts with the world"}
 						</p>
 					</div>
 					<div className="flex gap-2">
-						{hasBlogs && (
+						{hasPosts && (
 							<Button
 								variant="outline"
 								asChild
@@ -50,17 +51,17 @@ export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
 					</div>
 				</div>
 
-				{hasBlogs && (
+				{hasPosts && (
 					<>
 						{/* Posts Grid */}
 						<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-							{posts.slice(0, 3).map((post) => (
+							{userPosts.slice(0, 3).map((post) => (
 								<PostCard key={post.id} post={post} />
 							))}
 						</div>
 
 						{/* Load More Button */}
-						{posts.length > 3 && (
+						{userPosts.length > 3 && (
 							<div className="flex justify-center">
 								<Button size="lg" variant="outline" asChild>
 									<Link href="/my-posts">Load More Posts</Link>
@@ -75,10 +76,10 @@ export async function UserBlogsSection({ posts }: UserBlogsSectionProps) {
 }
 
 async function CreateYourFirstPost({
-	hasBlogs,
+	hasPosts,
 	posts,
 }: {
-	hasBlogs: boolean;
+	hasPosts: boolean;
 	posts: Post[];
 }) {
 	return (
@@ -89,7 +90,7 @@ async function CreateYourFirstPost({
 					<div>
 						<h2 className="text-3xl md:text-4xl font-bold mb-2">Your Blogs</h2>
 						<p className="text-foreground/60">
-							{hasBlogs
+							{hasPosts
 								? `You have ${posts.length} published post${posts.length !== 1 ? "s" : ""}`
 								: "Start sharing your thoughts with the world"}
 						</p>

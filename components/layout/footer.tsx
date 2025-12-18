@@ -3,8 +3,6 @@ import { Mail } from "lucide-react";
 import Link from "next/link";
 
 export async function Footer() {
-	const currentYear = new Date().getFullYear();
-
 	return (
 		<footer className="border-t border-border/40 bg-muted/30 mt-20">
 			<div className="container mx-auto px-4 py-12">
@@ -80,7 +78,7 @@ export async function Footer() {
 				{/* Divider */}
 				<div className="border-t border-border/40 pt-8">
 					<div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-foreground/70">
-						<p>&copy; {currentYear} Bloggish. All rights reserved.</p>
+						<p>&copy; 2025 Bloggish. All rights reserved.</p>
 						<div className="flex gap-6">
 							<Link
 								href="/privacy"

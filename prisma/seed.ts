@@ -17,11 +17,11 @@ const prisma = new PrismaClient({
 
 const usersData = [
 	{
-		id: "user_1",
-		email: "sarah.tech@example.com",
-		firstName: "Sarah",
-		lastName: "Chen",
-		username: "sarah_tech",
+		id: "f5IRnFLsTAGyUJUzHXM0plfERVB9RaFm",
+		email: "nishatislam3108@gmail.com",
+		firstName: "nishat",
+		lastName: "islam",
+		username: "nishatislam04",
 		image:
 			"https://api.dicebear.com/7.x/avataaars/png?seed=sarah_tech&backgroundColor=ffdfbf",
 		emailVerified: true,
@@ -157,7 +157,7 @@ const generatePostsData = () => [
 		slug: "nextjs-15-getting-started",
 		shortLink: "blog-nextjs15",
 		viewCount: Math.floor(Math.random() * 4000) + 800,
-		authorId: "user_1",
+		authorId: "f5IRnFLsTAGyUJUzHXM0plfERVB9RaFm",
 		categoryId: "cat_3",
 		readingTime: calculateReadingTime({
 			type: "doc",
@@ -305,7 +305,7 @@ const generatePostsData = () => [
 			"Learn how to structure and maintain large TypeScript codebases with proven patterns and tools.",
 		slug: "typescript-best-practices-large-apps",
 		shortLink: "blog-ts-practices",
-		authorId: "user_1",
+		authorId: "f5IRnFLsTAGyUJUzHXM0plfERVB9RaFm",
 		categoryId: "cat_2",
 		viewCount: Math.floor(Math.random() * 4000) + 800,
 		readingTime: calculateReadingTime({
@@ -812,7 +812,7 @@ export async function main() {
 		await prisma.post.create({
 			data: {
 				...post,
-				authorId: authorMap.get("user_1"),
+				authorId: authorMap.get("f5IRnFLsTAGyUJUzHXM0plfERVB9RaFm"),
 				tags: {
 					create: tags.map((tagId) => ({
 						tag: { connect: { id: tagId } },
