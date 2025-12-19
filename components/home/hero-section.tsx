@@ -1,15 +1,14 @@
-"use cache";
 import { ArrowRight, Clock, Eye } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import type { Post } from "@/types/types";
+import type { FeaturedPostType } from "@/types/featured-post.types";
 
-interface HeroSectionProps {
-	post: Post;
-}
+type HeroSectionProps = {
+	post: FeaturedPostType;
+};
 
-export async function HeroSection({ post }: HeroSectionProps) {
+export function HeroSection({ post }: HeroSectionProps) {
 	return (
 		<section className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-xl">
 			{/* Background Image */}
@@ -54,7 +53,7 @@ export async function HeroSection({ post }: HeroSectionProps) {
 								<div className="relative h-10 w-10 rounded-full overflow-hidden border-2 border-white/30">
 									<Image
 										src={post.author.avatar}
-										alt={post.author.name}
+										alt={post.author.fullName}
 										fill
 										className="object-cover"
 									/>
@@ -62,10 +61,12 @@ export async function HeroSection({ post }: HeroSectionProps) {
 							)}
 							<div>
 								<p className="text-sm font-semibold text-white">
-									{post.author.name}
+									{post.author.fullName}
 								</p>
 								<p className="text-xs text-white/70">
-									{new Date(post.publishedAt).toLocaleDateString("en-US", {
+									{new Date(
+										post.publishedAt ?? post.createdAt,
+									).toLocaleDateString("en-US", {
 										month: "short",
 										day: "numeric",
 										year: "numeric",
@@ -78,11 +79,13 @@ export async function HeroSection({ post }: HeroSectionProps) {
 						<div className="flex items-center gap-4 text-white/80">
 							<div className="flex items-center gap-1.5">
 								<Clock className="h-4 w-4" />
-								<span className="text-sm">{post.readTime}</span>
+								<span className="text-sm">{post.readingTime} min read</span>
 							</div>
 							<div className="flex items-center gap-1.5">
 								<Eye className="h-4 w-4" />
-								<span className="text-sm">{post.views.toLocaleString()}</span>
+								<span className="text-sm">
+									{post.viewCount.toLocaleString()}
+								</span>
 							</div>
 						</div>
 					</div>
