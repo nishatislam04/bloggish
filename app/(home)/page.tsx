@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { loadMoreLatestPosts } from "@/actions/load-more-latest-posts";
-import { CategoriesSection } from "@/components/home/categories-section";
+import { CategoriesSection } from "@/components/home/categories/categories-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { LatestPostsSection } from "@/components/home/latest-posts/latest-posts-section";
 import { NewsletterSection } from "@/components/home/newsletter-section";
@@ -36,10 +36,8 @@ export default async function Home() {
 				<PopularPostsSection posts={popularPosts} />
 			</Suspense>
 
-			{/* Categories Section - need to pre-render it */}
-			<Suspense fallback={<div>Loading Categories...</div>}>
-				<CategoriesSection />
-			</Suspense>
+			{/* Categories Section -- COMPLETE -- */}
+			<CategoriesSection />
 
 			{/* Popular Authors Section -- COMPLETE -- */}
 			<PopularAuthorsSection />
