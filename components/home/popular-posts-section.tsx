@@ -137,26 +137,6 @@ export function PopularPostsSection({ posts }: PopularPostsSectionProps) {
 							<ChevronRight className="h-5 w-5 text-white" />
 						</Button>
 					</div>
-
-					{/* Indicators */}
-					<div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
-						{posts.map((post, index) => (
-							<button
-								key={post.id}
-								type="button"
-								className={`h-2 rounded-full transition-all ${
-									index === currentIndex
-										? "w-8 bg-primary"
-										: "w-2 bg-white/40 hover:bg-white/60"
-								}`}
-								onClick={() => {
-									setCurrentIndex(index);
-									setIsAutoPlay(false);
-								}}
-								aria-label={`Go to slide ${index + 1}`}
-							/>
-						))}
-					</div>
 				</div>
 
 				{/* Thumbnails */}
