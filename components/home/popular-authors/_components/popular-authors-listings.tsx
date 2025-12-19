@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { popularAuthorsByCount } from "@/actions/popular-authors-by-count";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import type { PopularAuthorType } from "../../../../types/PopularAuthorType";
 
 const getUserInitials = (name: string) => {
 	return name
@@ -11,11 +11,9 @@ const getUserInitials = (name: string) => {
 		.toUpperCase();
 };
 
-export default function PopularAuthorsListings({
-	popularAuthors,
-}: {
-	popularAuthors: PopularAuthorType[];
-}) {
+export default async function PopularAuthorsListings() {
+	const popularAuthors = await popularAuthorsByCount();
+
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 			{popularAuthors.map((author) => (
