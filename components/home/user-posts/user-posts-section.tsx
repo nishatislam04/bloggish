@@ -14,10 +14,10 @@ export async function UserPostsSection() {
 	if (!session) return <SignInAndCreatePost />;
 
 	const userPosts = await getUserPosts();
-	const hasPosts = userPosts && userPosts.length > 0;
+	const hasPosts = userPosts?.length > 0;
 
 	// when signin but no posts published yet
-	if (session && userPosts.length === 0) return <UserHaveNoPosts />;
+	if (!hasPosts) return <UserHaveNoPosts />;
 
 	return (
 		<section className="py-16 md:py-20 bg-muted/30">
@@ -27,14 +27,14 @@ export async function UserPostsSection() {
 					<div>
 						<h2 className="text-3xl md:text-4xl font-bold mb-2">Your Posts</h2>
 						<p className="text-foreground/60">
-							Here is a glimps of your recent posts
+							Review and manage the stories you&apos;ve published or drafted.
 						</p>
 					</div>
 					<div className="flex gap-2">
 						<Button asChild className="gap-2">
 							<Link href="/create-post">
 								<Plus className="h-4 w-4" />
-								New Post
+								Create Post
 							</Link>
 						</Button>
 
@@ -45,7 +45,7 @@ export async function UserPostsSection() {
 								className="hidden sm:flex gap-2"
 							>
 								<Link href="/my-posts">
-									View All
+									View all posts
 									<ArrowRight className="h-4 w-4" />
 								</Link>
 							</Button>

@@ -1,4 +1,5 @@
 import { ArrowRight, Clock, Eye } from "lucide-react";
+import { cacheLife } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,9 @@ type HeroSectionProps = {
 	post: FeaturedPostType;
 };
 
-export function HeroSection({ post }: HeroSectionProps) {
+export async function HeroSection({ post }: HeroSectionProps) {
+	"use cache";
+	cacheLife("days");
 	return (
 		<section className="relative w-full h-[500px] md:h-[600px] overflow-hidden rounded-xl">
 			{/* Background Image */}

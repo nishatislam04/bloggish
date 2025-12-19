@@ -1,10 +1,11 @@
-"use cache";
-
 import { Check, Mail } from "lucide-react";
+import { cacheLife } from "next/cache";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export async function NewsletterSection() {
+	"use cache";
+	cacheLife("days");
 	return (
 		<section className="py-16 md:py-20 bg-linear-to-r from-primary/10 via-primary/5 to-primary/10">
 			<div className="container mx-auto px-4">

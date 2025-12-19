@@ -1,11 +1,13 @@
-"use cache";
 import { ArrowRight } from "lucide-react";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import PopularAuthorsListings from "./_components/popular-authors-listings";
 
 export async function PopularAuthorsSection() {
+	"use cache";
+	cacheLife("days");
 	return (
 		<section className="py-16 md:py-20">
 			<div className="container mx-auto px-4">

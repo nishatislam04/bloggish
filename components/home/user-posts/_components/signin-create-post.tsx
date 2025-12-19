@@ -1,8 +1,11 @@
 import { NotebookPen } from "lucide-react";
+import { cacheLife } from "next/cache";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
-export default function SignInAndCreatePost() {
+export default async function SignInAndCreatePost() {
+	"use cache";
+	cacheLife("days");
 	return (
 		<section className="py-16 md:py-20 bg-muted/30">
 			<div className="container mx-auto px-4">
