@@ -1,44 +1,57 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import z from "zod";
 import { Button } from "@/components/ui/button";
 import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
+	Field,
+	FieldDescription,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	FieldLegend,
+	FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { signIn } from "@/lib/auth/auth-client";
 
+const signInFormSchema = z.object({
+	email: z
+		.email("Please enter a valid email address")
+		.min(1, "Email is required"),
+	password: z
+		.string()
+		.min(1, "Password is required")
+		.min(8, "Password must be at least 8 characters"),
+});
+
 export default function SignIn() {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
+	const form = useForm<z.infer<typeof signInFormSchema>>({
+		resolver: zodResolver(signInFormSchema),
+		mode: "onBlur",
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
 
-	async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-		e.preventDefault();
-
+	async function onSubmit(data: z.infer<typeof signInFormSchema>) {
+		const { email, password } = data;
 		try {
-			await signIn.email(
-				{
-					email,
-					password,
-					callbackURL: "/",
-				},
-				{
-					onRequest: (ctx) => {
-						setLoading(true);
-					},
-					onResponse: (ctx) => {
-						setLoading(false);
-					},
-				},
-			);
+			const { error } = await signIn.email({
+				email,
+				password,
+			});
+
+			if (error) {
+				form.setError("email", {
+					type: "server-error",
+					message: error?.message,
+				});
+			} else toast.success("sign in success");
 		} catch (error) {
 			toast.error("An unexpected error occurred");
 			console.error("Signin error:", error);
@@ -47,56 +60,71 @@ export default function SignIn() {
 
 	return (
 		<section className="w-full h-full flex justify-center items-center min-h-screen">
-			<Card className="w-96">
-				<CardHeader>
-					<CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
-					<CardDescription className="text-xs md:text-sm">
-						Enter your email below to login to your account
-					</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<form onSubmit={handleSubmit}>
+			<form onSubmit={form.handleSubmit(onSubmit)}>
+				<FieldSet className="w-96 ">
+					<FieldLegend className="text-xl md:text-4xl">Sign In</FieldLegend>
+					<FieldDescription className="text-xs md:text-sm">
+						Enter your credentials below to sign in into your account
+					</FieldDescription>
+					<FieldGroup>
 						<div className="grid gap-4">
-							<div className="grid gap-2">
-								<Label htmlFor="email">Email</Label>
-								<Input
-									id="email"
-									type="email"
-									placeholder="m@example.com"
-									required
-									onChange={(e) => {
-										setEmail(e.target.value);
-									}}
-									value={email}
-								/>
-							</div>
+							<Controller
+								name="email"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor="email">Email</FieldLabel>
+										<Input
+											{...field}
+											id="email"
+											type="email"
+											placeholder="email@example.com"
+											required
+											aria-invalid={fieldState.invalid}
+										/>
+										{fieldState.invalid && (
+											<FieldError errors={[fieldState.error]} />
+										)}
+									</Field>
+								)}
+							/>
 
-							<div className="grid gap-2">
-								<div className="flex items-center">
-									<Label htmlFor="password">Password</Label>
-								</div>
+							<Controller
+								name="password"
+								control={form.control}
+								render={({ field, fieldState }) => (
+									<Field data-invalid={fieldState.invalid}>
+										<FieldLabel htmlFor="password">Password</FieldLabel>
+										<Input
+											{...field}
+											id="password"
+											type="password"
+											placeholder="password"
+											autoComplete="password"
+											aria-invalid={fieldState.invalid}
+										/>
+										{fieldState.invalid && (
+											<FieldError errors={[fieldState.error]} />
+										)}
+									</Field>
+								)}
+							/>
 
-								<Input
-									id="password"
-									type="password"
-									placeholder="password"
-									autoComplete="password"
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
-								/>
-							</div>
-
-							<Button type="submit" className="w-full mt-4" disabled={loading}>
-								{loading ? (
+							<Button
+								type="submit"
+								className="w-full mt-4"
+								disabled={form.formState.isSubmitting}
+							>
+								{form.formState.isSubmitting ? (
 									<Loader2 size={16} className="animate-spin" />
 								) : (
 									<p> SignIn </p>
 								)}
 							</Button>
 						</div>
-					</form>
-				</CardContent>
-			</Card>
+					</FieldGroup>
+				</FieldSet>
+			</form>
 		</section>
 	);
 }

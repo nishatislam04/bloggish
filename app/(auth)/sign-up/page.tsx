@@ -35,7 +35,7 @@ export default function SignUp() {
 				firstName,
 				lastName,
 				name: username,
-				callbackURL: "/sign-up",
+				callbackURL: "/sign-up", // A URL to redirect to after the user verifies their email (optional)
 				fetchOptions: {
 					onResponse: () => {
 						setLoading(false);
