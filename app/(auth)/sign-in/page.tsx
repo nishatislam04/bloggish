@@ -2,20 +2,19 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import FormInput from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 import {
-	Field,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
-	FieldLabel,
 	FieldLegend,
 	FieldSet,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { signIn } from "@/lib/auth/auth-client";
 
 const signInFormSchema = z.object({
@@ -40,12 +39,19 @@ export default function SignIn() {
 		},
 	});
 
+	const router = useRouter();
+
 	async function onSubmit(data: z.infer<typeof signInFormSchema>) {
 		const { email, password } = data;
 		try {
 			const { error } = await signIn.email({
 				email,
 				password,
+				fetchOptions: {
+					onSuccess: async () => {
+						router.push("/");
+					},
+				},
 			});
 
 			if (error) {
@@ -74,46 +80,23 @@ export default function SignIn() {
 					</FieldDescription>
 					<FieldGroup>
 						<div className="grid gap-4">
-							<Controller
+							<FormInput
+								form={form}
 								name="email"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="email">Email</FieldLabel>
-										<Input
-											{...field}
-											id="email"
-											type="email"
-											placeholder="email@example.com"
-											required
-											aria-invalid={fieldState.invalid}
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
+								label="Email"
+								type="email"
+								placeholder="email@example.com"
+								required={true}
+								autoComplete="email"
 							/>
 
-							<Controller
+							<FormInput
+								form={form}
 								name="password"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="password">Password</FieldLabel>
-										<Input
-											{...field}
-											id="password"
-											type="password"
-											placeholder="password"
-											autoComplete="password"
-											aria-invalid={fieldState.invalid}
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
+								label="Password"
+								type="password"
+								placeholder="•••••••"
+								autoComplete="current-password"
 							/>
 
 							{form.formState.errors.root && (

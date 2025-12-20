@@ -3,20 +3,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import FormInput from "@/components/form/form-input";
 import { Button } from "@/components/ui/button";
 import {
-	Field,
 	FieldDescription,
 	FieldError,
 	FieldGroup,
-	FieldLabel,
 	FieldLegend,
 	FieldSet,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
 import { signUp } from "@/lib/auth/auth-client";
 
 const signUpFormSchema = z.object({
@@ -114,107 +112,48 @@ export default function SignUp() {
 					<FieldGroup>
 						<div className="grid gap-4">
 							<FieldGroup className="grid grid-cols-2 gap-4">
-								<Controller
+								<FormInput
+									form={form}
 									name="firstName"
-									control={form.control}
-									render={({ field, fieldState }) => (
-										<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor="first-name">First name</FieldLabel>
-											<Input
-												{...field}
-												id="first-name"
-												placeholder="Max"
-												required
-												aria-invalid={fieldState.invalid}
-											/>
-											{fieldState.invalid && (
-												<FieldError errors={[fieldState.error]} />
-											)}
-										</Field>
-									)}
+									label="First Name"
+									required={true}
+									placeholder="Enter first name"
 								/>
 
-								<Controller
+								<FormInput
+									form={form}
 									name="lastName"
-									control={form.control}
-									render={({ field, fieldState }) => (
-										<Field data-invalid={fieldState.invalid}>
-											<FieldLabel htmlFor="last-name">Last name</FieldLabel>
-											<Input
-												{...field}
-												id="last-name"
-												placeholder="Robinson"
-												required
-												aria-invalid={fieldState.invalid}
-											/>
-											{fieldState.invalid && (
-												<FieldError errors={[fieldState.error]} />
-											)}
-										</Field>
-									)}
+									label="Last Name"
+									required={true}
+									placeholder="Enter your last name"
 								/>
 							</FieldGroup>
-							<Controller
+							<FormInput
+								form={form}
 								name="username"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="username">Username</FieldLabel>
-										<Input
-											{...field}
-											id="username"
-											type="text"
-											placeholder="username"
-											required
-											aria-invalid={fieldState.invalid}
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
+								label="Username"
+								placeholder="Enter your username"
+								required={true}
+								autoComplete="username"
 							/>
 
-							<Controller
+							<FormInput
+								form={form}
 								name="email"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="email">Email</FieldLabel>
-										<Input
-											{...field}
-											id="email"
-											type="email"
-											placeholder="email@example.com"
-											required
-											aria-invalid={fieldState.invalid}
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
+								label="Email"
+								placeholder="Enter your email address"
+								required={true}
+								type="email"
+								autoComplete="email"
 							/>
 
-							<Controller
+							<FormInput
+								form={form}
 								name="password"
-								control={form.control}
-								render={({ field, fieldState }) => (
-									<Field data-invalid={fieldState.invalid}>
-										<FieldLabel htmlFor="password">Password</FieldLabel>
-										<Input
-											{...field}
-											id="password"
-											type="password"
-											autoComplete="new-password"
-											placeholder="Password"
-											aria-invalid={fieldState.invalid}
-										/>
-										{fieldState.invalid && (
-											<FieldError errors={[fieldState.error]} />
-										)}
-									</Field>
-								)}
+								label="Password"
+								type="password"
+								autoComplete="password"
+								required={true}
 							/>
 
 							{form.formState.errors.root && (
