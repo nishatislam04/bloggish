@@ -21,11 +21,13 @@ import { signIn } from "@/lib/auth/auth-client";
 const signInFormSchema = z.object({
 	email: z
 		.email("Please enter a valid email address")
-		.min(1, "Email is required"),
+		.min(1, "Email is required")
+		.transform((val) => val.trim()),
 	password: z
 		.string()
 		.min(1, "Password is required")
-		.min(8, "Password must be at least 8 characters"),
+		.min(8, "Password must be at least 8 characters")
+		.transform((val) => val.trim()),
 });
 
 export default function SignIn() {
@@ -55,13 +57,17 @@ export default function SignIn() {
 		} catch (error) {
 			toast.error("An unexpected error occurred");
 			console.error("Signin error:", error);
+			form.setError("root", {
+				type: "server-error",
+				message: "An unexpected error occurred. Please try again.",
+			});
 		}
 	}
 
 	return (
 		<section className="w-full h-full flex justify-center items-center min-h-screen">
 			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<FieldSet className="w-96 ">
+				<FieldSet className="w-96">
 					<FieldLegend className="text-xl md:text-4xl">Sign In</FieldLegend>
 					<FieldDescription className="text-xs md:text-sm">
 						Enter your credentials below to sign in into your account
@@ -109,6 +115,10 @@ export default function SignIn() {
 									</Field>
 								)}
 							/>
+
+							{form.formState.errors.root && (
+								<FieldError errors={[form.formState.errors.root]} />
+							)}
 
 							<Button
 								type="submit"
