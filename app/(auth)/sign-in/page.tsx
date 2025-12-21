@@ -7,6 +7,8 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
 import FormInput from "@/components/form/form-input";
+import { FormRootError } from "@/components/form/form-root-error";
+import { FormSubmitButton } from "@/components/form/form-submit-button";
 import { Button } from "@/components/ui/button";
 import {
 	FieldDescription,
@@ -99,21 +101,9 @@ export default function SignIn() {
 								autoComplete="current-password"
 							/>
 
-							{form.formState.errors.root && (
-								<FieldError errors={[form.formState.errors.root]} />
-							)}
+							<FormRootError form={form} />
 
-							<Button
-								type="submit"
-								className="w-full mt-4"
-								disabled={form.formState.isSubmitting}
-							>
-								{form.formState.isSubmitting ? (
-									<Loader2 size={16} className="animate-spin" />
-								) : (
-									<p> SignIn </p>
-								)}
-							</Button>
+							<FormSubmitButton form={form} label="Sign In" />
 						</div>
 					</FieldGroup>
 				</FieldSet>
