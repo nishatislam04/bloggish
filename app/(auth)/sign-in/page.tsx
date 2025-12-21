@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -9,10 +8,8 @@ import z from "zod";
 import FormInput from "@/components/form/form-input";
 import { FormRootError } from "@/components/form/form-root-error";
 import { FormSubmitButton } from "@/components/form/form-submit-button";
-import { Button } from "@/components/ui/button";
 import {
 	FieldDescription,
-	FieldError,
 	FieldGroup,
 	FieldLegend,
 	FieldSet,
@@ -49,6 +46,7 @@ export default function SignIn() {
 			const { error } = await signIn.email({
 				email,
 				password,
+				callbackURL: "/",
 				fetchOptions: {
 					onSuccess: async () => {
 						router.push("/");

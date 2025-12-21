@@ -10,37 +10,37 @@ import { PopularPostsSection } from "@/components/home/popular-posts/popular-pos
 import { UserPostsSection } from "@/components/home/user-posts/user-posts-section";
 
 export default async function Home() {
-	const featuredPost = await loadFeaturedPost();
-	const latestPosts = loadMoreLatestPosts(0, 6);
+	// const featuredPost = await loadFeaturedPost();
+	// const latestPosts = loadMoreLatestPosts(0, 6);
 
 	return (
 		<>
 			{/* Hero Section */}
 			<section className="container mx-auto px-4 py-8 md:py-12">
 				<Suspense fallback={<div>Loading featured post...</div>}>
-					<HeroSection post={featuredPost} />
+					{/*<HeroSection post={featuredPost} />*/}
 				</Suspense>
 			</section>
 
 			{/* User Post Section */}
 			<Suspense fallback={<div>Loading user post...</div>}>
-				<UserPostsSection />
+				{/*<UserPostsSection />*/}
 			</Suspense>
 
 			{/* Latest Posts Section -- COMPLETE --*/}
-			<LatestPostsSection latestPosts={latestPosts} />
+			{/*<LatestPostsSection latestPosts={latestPosts} />*/}
 
 			{/* Popular Posts This Week Section */}
-			<PopularPostsSection />
+			{/*<PopularPostsSection />*/}
 
 			{/* Categories Section -- COMPLETE -- */}
-			<CategoriesSection />
+			{/*<CategoriesSection />*/}
 
 			{/* Popular Authors Section -- COMPLETE -- */}
-			<PopularAuthorsSection />
+			{/*<PopularAuthorsSection />*/}
 
 			{/* Newsletter Section -- COMPLETE -- */}
-			<NewsletterSection />
+			{/*<NewsletterSection />*/}
 		</>
 	);
 }

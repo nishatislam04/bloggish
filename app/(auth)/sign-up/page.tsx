@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -9,10 +8,8 @@ import z from "zod";
 import FormInput from "@/components/form/form-input";
 import { FormRootError } from "@/components/form/form-root-error";
 import { FormSubmitButton } from "@/components/form/form-submit-button";
-import { Button } from "@/components/ui/button";
 import {
 	FieldDescription,
-	FieldError,
 	FieldGroup,
 	FieldLegend,
 	FieldSet,
@@ -73,13 +70,14 @@ export default function SignUp() {
 				firstName,
 				lastName,
 				name: username,
+				callbackURL: "/",
 				fetchOptions: {
 					onError: (ctx) => {
 						toast.error("something went wrong when trying to signup");
 						console.log("sign up error: ", ctx.error.message);
 					},
 					onSuccess: async () => {
-						router.push("/");
+						router.push("/verify-email-notify");
 					},
 				},
 			});

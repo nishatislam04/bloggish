@@ -1,5 +1,6 @@
 "use server";
 
+import { error } from "node:console";
 import { cacheLife } from "next/cache";
 import prisma from "@/lib/prisma";
 import type { FeaturedPostType } from "@/types/featured-post.types";

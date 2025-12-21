@@ -1,6 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { customSession } from "better-auth/plugins";
+import { sendVerificationEmail } from "../email";
 import prisma from "../prisma";
 
 export const auth = betterAuth({
@@ -9,6 +10,20 @@ export const auth = betterAuth({
 	}),
 	emailAndPassword: {
 		enabled: true,
+		autoSignIn: false,
+		requireEmailVerification: true,
+	},
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url, token }, request) => {
+			try {
+				await sendVerificationEmail(user.email, url);
+			} catch (error) {
+				console.error("Failed to send verification email:", error);
+				throw error;
+			}
+		},
+		sendOnSignUp: true,
+		sendOnSignIn: true,
 	},
 	user: {
 		fields: {
