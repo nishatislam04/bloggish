@@ -62,9 +62,9 @@ export default function VerifyEmailNotifyPage() {
 								<p className="text-sm text-gray-500">
 									Already verified your email?
 								</p>
-								<Button variant="link" className="text-primary mt-1" asChild>
-									<Link href="/sign-in">
-										Go to Sign In
+								<Button variant="link" className="text-primary" asChild>
+									<Link href="/">
+										Go to Homepage
 										<ArrowRight className="ml-2 h-4 w-4" />
 									</Link>
 								</Button>
