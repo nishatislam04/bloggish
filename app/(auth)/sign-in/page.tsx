@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -98,6 +99,15 @@ export default function SignIn() {
 								placeholder="•••••••"
 								autoComplete="current-password"
 							/>
+
+							<div className="text-right w-full -mt-2 mb-2">
+								<Link
+									href="/request-password-reset"
+									className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200"
+								>
+									Forgot your password?
+								</Link>
+							</div>
 
 							<FormRootError form={form} />
 
