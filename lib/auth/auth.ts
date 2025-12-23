@@ -16,6 +16,7 @@ export const auth = betterAuth({
 	emailVerification: {
 		sendVerificationEmail: async ({ user, url, token }, request) => {
 			try {
+				// according to docs, we should not await it
 				await sendVerificationEmail(user.email, url);
 			} catch (error) {
 				console.error("Failed to send verification email:", error);
@@ -24,8 +25,7 @@ export const auth = betterAuth({
 		},
 		sendOnSignUp: true,
 		sendOnSignIn: true,
-		autoSignInAfterVerification: true
-
+		autoSignInAfterVerification: true,
 	},
 	user: {
 		fields: {

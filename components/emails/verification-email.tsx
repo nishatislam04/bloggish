@@ -1,6 +1,7 @@
 import {
 	Body,
 	Container,
+	Head,
 	Heading,
 	Html,
 	Link,
@@ -9,10 +10,13 @@ import {
 	Text,
 } from "@react-email/components";
 
-export function VerificationEmail({ url }: { url: string }) {
+export default function VerificationEmail({ url }: { url: string }) {
 	return (
-		<Html>
-			<Preview>Verify your email address</Preview>
+		<Html lang="en" dir="ltr">
+			<Head>
+				<title>Verify Your Email Address</title>
+			</Head>
+			<Preview>Verify your Email address</Preview>
 			<Body style={main}>
 				<Container style={container}>
 					<Heading style={h1}>Verify Your Email</Heading>
@@ -25,10 +29,10 @@ export function VerificationEmail({ url }: { url: string }) {
 							Verify Email Address
 						</Link>
 					</Section>
+					<Text style={paragraph}>Or copy this link: {url}</Text>
 					<Text style={paragraph}>
 						If you didn't create an account, you can safely ignore this email.
 					</Text>
-					<Text style={paragraph}>Or copy this link: {url}</Text>
 				</Container>
 			</Body>
 		</Html>
@@ -62,7 +66,7 @@ const paragraph = {
 };
 
 const btnContainer = {
-	textAlign: "center" as const,
+	textAlign: "left" as const,
 	margin: "20px 0",
 };
 
